@@ -1,6 +1,7 @@
 package rs.ac.bg.etf.pp1;
 
 import java_cup.runtime.Symbol;
+
 %%
 
 %{
@@ -14,8 +15,8 @@ import java_cup.runtime.Symbol;
 	private Symbol new_symbol(int type, Object value) {
 		return new Symbol(type, yyline+1, yycolumn, value);
 	}
-	
-}%
+
+%}
 
 %cup
 %line
@@ -23,7 +24,7 @@ import java_cup.runtime.Symbol;
 
 %xstate COMMENT
 
-%eofval{  
+%eofval{
 	return new_symbol(sym.EOF);
 %eofval}
 
@@ -35,8 +36,8 @@ import java_cup.runtime.Symbol;
 "\r\n" 	{ }
 "\f" 	{ }
 
-";" 		{ return new_symbol(sym.SEMIcolon, yytext()); }
-":" 		{ return new_symbol(sym.colon, yytext()); }
+";" 		{ return new_symbol(sym.SEMICOLON, yytext()); }
+":" 		{ return new_symbol(sym.COLON, yytext()); }
 "," 		{ return new_symbol(sym.COMMA, yytext()); }
 "." 		{ return new_symbol(sym.DOT, yytext()); }
 "(" 		{ return new_symbol(sym.LPARENT, yytext()); }
@@ -53,7 +54,7 @@ import java_cup.runtime.Symbol;
 "new" 		{ return new_symbol(sym.NEW, yytext()); }
 "return" 	{ return new_symbol(sym.RETURN, yytext()); }
 "void" 		{ return new_symbol(sym.VOID, yytext()); }
-"extends"   { return new_symbol(sym.EXTENDS, yytext()); 
+"extends"   { return new_symbol(sym.EXTENDS, yytext()); }
 "static"  	{ return new_symbol(sym.STATIC, yytext()); }
 
 "break"		{ return new_symbol(sym.BREAK, yytext()); }
@@ -82,14 +83,15 @@ import java_cup.runtime.Symbol;
 ">" 		{ return new_symbol(sym.GREATER, yytext()); }
 ">=" 		{ return new_symbol(sym.GREATER_EQUAL, yytext()); }
 "<" 		{ return new_symbol(sym.LESS, yytext()); }
-"<=" 		{ return new_symbol(sym.LESS_EQUALS, yytext()); }
+"<=" 		{ return new_symbol(sym.LESS_EQUAL, yytext()); }
 
-"//" 				{ yybegin(COMMENT); }
-<COMMENT> .      	{ yybegin(COMMENT); }
-<COMMENT> "\r\n" 	{ yybegin(YYINITIAL); }
+"//" 		     { yybegin(COMMENT); }
+<COMMENT> .      { yybegin(COMMENT); }
+<COMMENT> "\n" 	 { yybegin(YYINITIAL); }
 
-([a-z]|[A-Z])[a-zA-Z0-9_]* 	{return new_symbol (sym.IDENT, yytext()); }
 [0-9]+  { return new_symbol(sym.NUMBER, new Integer (yytext())); }
 "'"."'" { return new_symbol(sym.CHAR, new Character (yytext().charAt(1))); }
+"true"|"false" { return new_symbol(sym.BOOL, new Boolean (yytext().equals("true") ? true : false)); }
+([a-z]|[A-Z])[a-zA-Z0-9_]* 	{return new_symbol (sym.IDENT, yytext()); }
 
 . { System.err.println("Leksicka greska ("+yytext()+") u liniji "+(yyline+1)); }
