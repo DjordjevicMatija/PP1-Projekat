@@ -1,0 +1,23 @@
+INFO  00:52:43,908 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
+INFO  00:52:44,027 - #13 program
+INFO  00:52:44,028 - #47 MJProgram
+INFO  00:52:44,028 - #47 int
+INFO  00:52:44,030 - #47 x
+INFO  00:52:44,032 - #2 ;
+INFO  00:52:44,032 - #10 {
+INFO  00:52:44,034 - #18 void
+INFO  00:52:44,035 - #47 main
+INFO  00:52:44,035 - #6 (
+INFO  00:52:44,037 - #7 )
+INFO  00:52:44,039 - #10 {
+INFO  00:52:44,040 - #26 print
+INFO  00:52:44,042 - #6 (
+INFO  00:52:44,042 - #44 1
+INFO  00:52:44,042 - #7 )
+INFO  00:52:44,045 - #2 ;
+INFO  00:52:44,045 - #11 }
+INFO  00:52:44,045 - #11 }
+INFO  00:52:44,049 - rs.ac.bg.etf.pp1.ast.Program@4edde6e5
+INFO  00:52:44,050 - ====================================
+INFO  00:52:44,055 - Prepoznata naredba print!
+INFO  00:52:44,055 - Print count calls = 1
