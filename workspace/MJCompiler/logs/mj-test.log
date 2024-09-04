@@ -1,16 +1,29 @@
-INFO  00:54:38,828 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
-INFO  00:54:38,836 - #1 program
-INFO  00:54:38,836 - #16 MJProgram
-INFO  00:54:38,836 - #16 int
-INFO  00:54:38,836 - #16 x
-INFO  00:54:38,836 - #38 ,
-INFO  00:54:38,836 - #16 y
-INFO  00:54:38,836 - #36 ;
-INFO  00:54:38,836 - #44 {
-INFO  00:54:38,837 - #11 void
-INFO  00:54:38,837 - #16 main
-INFO  00:54:38,837 - #40 (
-INFO  00:54:38,837 - #41 )
-INFO  00:54:38,837 - #44 {
-INFO  00:54:38,837 - #45 }
-INFO  00:54:38,837 - #45 }
+INFO  00:53:06,080 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
+INFO  00:53:06,261 - #13 program
+INFO  00:53:06,261 - #47 MJProgram
+INFO  00:53:06,262 - #47 int
+INFO  00:53:06,265 - #47 x
+INFO  00:53:06,268 - #2 ;
+INFO  00:53:06,268 - #10 {
+INFO  00:53:06,271 - #18 void
+INFO  00:53:06,272 - #47 main
+INFO  00:53:06,272 - #6 (
+INFO  00:53:06,274 - #7 )
+INFO  00:53:06,276 - #10 {
+INFO  00:53:06,278 - #26 print
+INFO  00:53:06,279 - #6 (
+INFO  00:53:06,280 - #44 1
+INFO  00:53:06,280 - #7 )
+INFO  00:53:06,282 - #2 ;
+INFO  00:53:06,282 - #26 print
+INFO  00:53:06,283 - #6 (
+INFO  00:53:06,284 - #44 1
+INFO  00:53:06,284 - #7 )
+INFO  00:53:06,284 - #2 ;
+INFO  00:53:06,285 - #11 }
+INFO  00:53:06,285 - #11 }
+INFO  00:53:06,290 - rs.ac.bg.etf.pp1.ast.Program@4edde6e5
+INFO  00:53:06,290 - ====================================
+INFO  00:53:06,298 - Prepoznata naredba print!
+INFO  00:53:06,298 - Prepoznata naredba print!
+INFO  00:53:06,298 - Print count calls = 2
