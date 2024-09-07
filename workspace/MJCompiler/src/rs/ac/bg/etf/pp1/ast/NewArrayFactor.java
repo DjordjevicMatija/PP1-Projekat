@@ -1,20 +1,20 @@
 // generated with ast extension for cup
 // version 0.8
-// 6/8/2024 0:51:15
+// 7/8/2024 12:57:53
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class NewActParsFactor extends Factor {
+public class NewArrayFactor extends Factor {
 
     private Type Type;
-    private OptActPars OptActPars;
+    private Expr Expr;
 
-    public NewActParsFactor (Type Type, OptActPars OptActPars) {
+    public NewArrayFactor (Type Type, Expr Expr) {
         this.Type=Type;
         if(Type!=null) Type.setParent(this);
-        this.OptActPars=OptActPars;
-        if(OptActPars!=null) OptActPars.setParent(this);
+        this.Expr=Expr;
+        if(Expr!=null) Expr.setParent(this);
     }
 
     public Type getType() {
@@ -25,12 +25,12 @@ public class NewActParsFactor extends Factor {
         this.Type=Type;
     }
 
-    public OptActPars getOptActPars() {
-        return OptActPars;
+    public Expr getExpr() {
+        return Expr;
     }
 
-    public void setOptActPars(OptActPars OptActPars) {
-        this.OptActPars=OptActPars;
+    public void setExpr(Expr Expr) {
+        this.Expr=Expr;
     }
 
     public void accept(Visitor visitor) {
@@ -39,25 +39,25 @@ public class NewActParsFactor extends Factor {
 
     public void childrenAccept(Visitor visitor) {
         if(Type!=null) Type.accept(visitor);
-        if(OptActPars!=null) OptActPars.accept(visitor);
+        if(Expr!=null) Expr.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
         if(Type!=null) Type.traverseTopDown(visitor);
-        if(OptActPars!=null) OptActPars.traverseTopDown(visitor);
+        if(Expr!=null) Expr.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
         if(Type!=null) Type.traverseBottomUp(visitor);
-        if(OptActPars!=null) OptActPars.traverseBottomUp(visitor);
+        if(Expr!=null) Expr.traverseBottomUp(visitor);
         accept(visitor);
     }
 
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("NewActParsFactor(\n");
+        buffer.append("NewArrayFactor(\n");
 
         if(Type!=null)
             buffer.append(Type.toString("  "+tab));
@@ -65,14 +65,14 @@ public class NewActParsFactor extends Factor {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(OptActPars!=null)
-            buffer.append(OptActPars.toString("  "+tab));
+        if(Expr!=null)
+            buffer.append(Expr.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");
 
         buffer.append(tab);
-        buffer.append(") [NewActParsFactor]");
+        buffer.append(") [NewArrayFactor]");
         return buffer.toString();
     }
 }

@@ -1,16 +1,16 @@
 // generated with ast extension for cup
 // version 0.8
-// 6/8/2024 0:51:15
+// 7/8/2024 12:57:53
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class IdentsOrExpresion extends IdentOrExprList {
+public class IdentsOrExpresions extends IdentOrExprList {
 
     private IdentOrExprList IdentOrExprList;
     private IdentOrExpr IdentOrExpr;
 
-    public IdentsOrExpresion (IdentOrExprList IdentOrExprList, IdentOrExpr IdentOrExpr) {
+    public IdentsOrExpresions (IdentOrExprList IdentOrExprList, IdentOrExpr IdentOrExpr) {
         this.IdentOrExprList=IdentOrExprList;
         if(IdentOrExprList!=null) IdentOrExprList.setParent(this);
         this.IdentOrExpr=IdentOrExpr;
@@ -57,7 +57,7 @@ public class IdentsOrExpresion extends IdentOrExprList {
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("IdentsOrExpresion(\n");
+        buffer.append("IdentsOrExpresions(\n");
 
         if(IdentOrExprList!=null)
             buffer.append(IdentOrExprList.toString("  "+tab));
@@ -72,7 +72,7 @@ public class IdentsOrExpresion extends IdentOrExprList {
         buffer.append("\n");
 
         buffer.append(tab);
-        buffer.append(") [IdentsOrExpresion]");
+        buffer.append(") [IdentsOrExpresions]");
         return buffer.toString();
     }
 }

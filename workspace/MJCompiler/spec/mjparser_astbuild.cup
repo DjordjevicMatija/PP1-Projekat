@@ -283,8 +283,9 @@ Factor ::=
     | (FactorNumber) NUMBER:N1 {: RESULT=new FactorNumber(N1); RESULT.setLine(N1left); :}
     | (FactorChar) CHAR:C1 {: RESULT=new FactorChar(C1); RESULT.setLine(C1left); :}
     | (FactorBool) BOOL:B1 {: RESULT=new FactorBool(B1); RESULT.setLine(B1left); :}
-    | (NewExprFactor) NEW Type:T1 LBRACKET Expr:E2 RBRACKET {: RESULT=new NewExprFactor(T1, E2); RESULT.setLine(T1left); :}
-    | (NewActParsFactor) NEW Type:T1 LPARENT OptActPars:O2 RPARENT {: RESULT=new NewActParsFactor(T1, O2); RESULT.setLine(T1left); :}
+    | (NewArrayFactor) NEW Type:T1 LBRACKET Expr:E2 RBRACKET {: RESULT=new NewArrayFactor(T1, E2); RESULT.setLine(T1left); :}
+    | (NewMatrixFactor) NEW Type:T1 LBRACKET Expr:E2 RBRACKET LBRACKET Expr:E3 RBRACKET {: RESULT=new NewMatrixFactor(T1, E2, E3); RESULT.setLine(T1left); :}
+    | (NewClassFactor) NEW Type:T1 LPARENT OptActPars:O2 RPARENT {: RESULT=new NewClassFactor(T1, O2); RESULT.setLine(T1left); :}
     | (FactorExpr) LPARENT Expr:E1 RPARENT {: RESULT=new FactorExpr(E1); RESULT.setLine(E1left); :}
 ;
 
@@ -293,8 +294,8 @@ Designator ::= (Designator)
 ;
 
 IdentOrExprList ::=
-    (SingleIdentOrExpr) IdentOrExpr:I1 {: RESULT=new SingleIdentOrExpr(I1); RESULT.setLine(I1left); :}
-    | (IdentsOrExpresion) IdentOrExprList:I1 IdentOrExpr:I2 {: RESULT=new IdentsOrExpresion(I1, I2); RESULT.setLine(I1left); :}
+    (IdentsOrExpresions) IdentOrExprList:I1 IdentOrExpr:I2 {: RESULT=new IdentsOrExpresions(I1, I2); RESULT.setLine(I1left); :}
+    | (NoIdentOrExpr) {: RESULT=new NoIdentOrExpr(); :} /* epsilon */
 ;
 
 IdentOrExpr ::=

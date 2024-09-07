@@ -1,8 +1,13 @@
 program MJProgram
-	int x;
+	int x, y;
+	const char z = 'a';
+	int arr[];
+	int mat[][];
 {
 	void main(){
 		print(1);
-		print(1);		
+		print(1);
+		arr = new int[5];
+		mat = new int[2][3+(2-1)];
 	}
 }

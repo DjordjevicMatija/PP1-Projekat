@@ -1,0 +1,31 @@
+INFO  12:41:57,961 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
+INFO  12:41:58,142 - #13 program
+INFO  12:41:58,143 - #47 MJProgram
+INFO  12:41:58,143 - #47 int
+INFO  12:41:58,146 - #47 x
+INFO  12:41:58,149 - #4 ,
+INFO  12:41:58,150 - #47 y
+INFO  12:41:58,150 - #2 ;
+INFO  12:41:58,150 - #15 const
+INFO  12:41:58,153 - #47 char
+INFO  12:41:58,154 - #47 z
+INFO  12:41:58,154 - #35 =
+INFO  12:41:58,154 - #45 a
+INFO  12:41:58,154 - #2 ;
+INFO  12:41:58,157 - #47 int
+INFO  12:41:58,160 - #47 arr
+INFO  12:41:58,160 - #8 [
+INFO  12:41:58,160 - #9 ]
+INFO  12:41:58,161 - #2 ;
+INFO  12:41:58,162 - #47 int
+INFO  12:41:58,162 - #47 mat
+INFO  12:41:58,162 - #8 [
+INFO  12:41:58,163 - #9 ]
+INFO  12:41:58,163 - #8 [
+INFO  12:41:58,163 - #9 ]
+INFO  12:41:58,163 - #2 ;
+INFO  12:41:58,164 - #10 {
+INFO  12:41:58,164 - #16 new
+ERROR 12:41:58,164 - 
+Sintaksna greska na liniji 7
+ERROR 12:41:58,164 - Fatalna greska, parsiranje se ne moze nastaviti na liniji 7

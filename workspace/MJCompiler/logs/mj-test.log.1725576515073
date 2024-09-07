@@ -1,9 +1,0 @@
-INFO  00:47:02,078 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
-INFO  00:47:02,232 - #13 program
-INFO  00:47:02,233 - #47 MJProgram
-INFO  00:47:02,233 - #47 int
-INFO  00:47:02,233 - #47 x
-INFO  00:47:02,236 - #4 ,
-ERROR 00:47:02,237 - 
-Sintaksna greska na liniji 2
-ERROR 00:47:02,237 - Fatalna greska, parsiranje se ne moze nastaviti na liniji 2

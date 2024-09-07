@@ -283,8 +283,9 @@ Factor ::=
     | (FactorNumber) NUMBER
     | (FactorChar) CHAR
     | (FactorBool) BOOL
-    | (NewExprFactor) NEW Type LBRACKET Expr RBRACKET
-    | (NewActParsFactor) NEW Type LPARENT OptActPars RPARENT
+    | (NewArrayFactor) NEW Type LBRACKET Expr RBRACKET
+    | (NewMatrixFactor) NEW Type LBRACKET Expr RBRACKET LBRACKET Expr RBRACKET
+    | (NewClassFactor) NEW Type LPARENT OptActPars RPARENT
     | (FactorExpr) LPARENT Expr RPARENT
 ;
 
@@ -293,8 +294,8 @@ Designator ::= (Designator)
 ;
 
 IdentOrExprList ::=
-    (SingleIdentOrExpr) IdentOrExpr
-    | (IdentsOrExpresion) IdentOrExprList IdentOrExpr
+    (IdentsOrExpresions) IdentOrExprList IdentOrExpr
+    | (NoIdentOrExpr) /* epsilon */
 ;
 
 IdentOrExpr ::=

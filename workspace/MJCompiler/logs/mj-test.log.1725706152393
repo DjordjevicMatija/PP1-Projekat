@@ -1,0 +1,47 @@
+INFO  12:48:15,752 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
+INFO  12:48:15,844 - #13 program
+INFO  12:48:15,844 - #47 MJProgram
+INFO  12:48:15,844 - #47 int
+INFO  12:48:15,846 - #47 x
+INFO  12:48:15,848 - #4 ,
+INFO  12:48:15,849 - #47 y
+INFO  12:48:15,849 - #2 ;
+INFO  12:48:15,849 - #15 const
+INFO  12:48:15,851 - #47 char
+INFO  12:48:15,852 - #47 z
+INFO  12:48:15,852 - #35 =
+INFO  12:48:15,852 - #45 a
+INFO  12:48:15,852 - #2 ;
+INFO  12:48:15,854 - #47 int
+INFO  12:48:15,856 - #47 arr
+INFO  12:48:15,856 - #8 [
+INFO  12:48:15,856 - #9 ]
+INFO  12:48:15,857 - #2 ;
+INFO  12:48:15,857 - #47 int
+INFO  12:48:15,857 - #47 mat
+INFO  12:48:15,858 - #8 [
+INFO  12:48:15,858 - #9 ]
+INFO  12:48:15,858 - #8 [
+INFO  12:48:15,858 - #9 ]
+INFO  12:48:15,858 - #2 ;
+INFO  12:48:15,859 - #10 {
+INFO  12:48:15,859 - #18 void
+INFO  12:48:15,860 - #47 main
+INFO  12:48:15,860 - #6 (
+INFO  12:48:15,862 - #7 )
+INFO  12:48:15,863 - #10 {
+INFO  12:48:15,865 - #26 print
+INFO  12:48:15,866 - #6 (
+INFO  12:48:15,866 - #44 1
+INFO  12:48:15,867 - #7 )
+INFO  12:48:15,869 - #2 ;
+INFO  12:48:15,870 - #26 print
+INFO  12:48:15,871 - #6 (
+INFO  12:48:15,871 - #44 1
+INFO  12:48:15,871 - #7 )
+INFO  12:48:15,871 - #2 ;
+INFO  12:48:15,872 - #47 arr
+INFO  12:48:15,872 - #35 =
+ERROR 12:48:15,872 - 
+Sintaksna greska na liniji 10
+ERROR 12:48:15,872 - Fatalna greska, parsiranje se ne moze nastaviti na liniji 10
