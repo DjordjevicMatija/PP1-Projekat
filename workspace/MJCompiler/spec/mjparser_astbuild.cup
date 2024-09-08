@@ -91,14 +91,19 @@ nonterminal Relop Relop;
 nonterminal Addop Addop;
 nonterminal Mulop Mulop;
 nonterminal DesignatorStmtList DesignatorStmtList;
+nonterminal DesignatorStatementElem DesignatorStatementElem;
 nonterminal DesignatorStatement DesignatorStatement;
+nonterminal DesignatorList DesignatorList;
+nonterminal DesignatorElems DesignatorElems;
+nonterminal DesignatorElemList DesignatorElemList;
+nonterminal OptDesignator OptDesignator;
 nonterminal OptCondFact OptCondFact;
 nonterminal OptActPars OptActPars;
 nonterminal ActPars ActPars;
 
 
 Program ::= (Program)
-    PROG ProgName:P1 DeclList:D2  LBRACE MethodDeclList:M3 RBRACE {: RESULT=new Program(P1, D2, M3); RESULT.setLine(P1left); :}
+    PROG ProgName:P1 DeclList:D2 LBRACE MethodDeclList:M3 RBRACE {: RESULT=new Program(P1, D2, M3); RESULT.setLine(P1left); :}
 ;
 
 ProgName ::= (ProgName)
@@ -106,7 +111,7 @@ ProgName ::= (ProgName)
 ;
 
 DeclList ::=
-    (DeclarationList) DeclList:D1  Decl:D2 {: RESULT=new DeclarationList(D1, D2); RESULT.setLine(D1left); :}
+    (DeclarationList) DeclList:D1 Decl:D2 {: RESULT=new DeclarationList(D1, D2); RESULT.setLine(D1left); :}
     | (NoDeclarationList) {: RESULT=new NoDeclarationList(); :} /* epsilon */
 ;
 
@@ -115,13 +120,17 @@ Decl ::=
     | (VarDeclaration) VarDecl:V1 {: RESULT=new VarDeclaration(V1); RESULT.setLine(V1left); :}
 ;
 
-ConstDecl ::= (ConstDecl)
-    CONST Type:T1 ConstList:C2 SEMICOLON {: RESULT=new ConstDecl(T1, C2); RESULT.setLine(T1left); :}
+ConstDecl ::=
+    (ConstantDeclaration) CONST Type:T1 ConstList:C2 SEMICOLON {: RESULT=new ConstantDeclaration(T1, C2); RESULT.setLine(T1left); :}
+    | (ErrorConstDeclSemi) CONST error:err SEMICOLON
+        {: parser.log.debug("Uspesan oporavak od greske pri definiciji globalne konstante na liniji " + errleft); :} {: RESULT=new ErrorConstDeclSemi(); :}
 ;
 
 ConstList ::=
     (SingleConstantDecl) SingleConst:S1 {: RESULT=new SingleConstantDecl(S1); RESULT.setLine(S1left); :}
     | (ConsantListDecl) ConstList:C1 COMMA SingleConst:S2 {: RESULT=new ConsantListDecl(C1, S2); RESULT.setLine(C1left); :}
+    | (ErrorConstDeclComma) error:err
+        {: parser.log.debug("Uspesan oporavak od greske pri definiciji globalne konstante na liniji " + errleft); :} {: RESULT=new ErrorConstDeclComma(); :}
 ;
 
 SingleConst ::= (SingleConst)
@@ -134,13 +143,17 @@ Const ::=
     | (ConstBool) BOOL:B1 {: RESULT=new ConstBool(B1); RESULT.setLine(B1left); :}
 ;
 
-VarDecl ::= (VarDecl)
-    Type:T1 VarList:V2 SEMICOLON {: RESULT=new VarDecl(T1, V2); RESULT.setLine(T1left); :}
+VarDecl ::=
+    (VariableDeclaration) Type:T1 VarList:V2 SEMICOLON {: RESULT=new VariableDeclaration(T1, V2); RESULT.setLine(T1left); :}
+    | (ErrorVarDeclSemi) error:err SEMICOLON
+        {: parser.log.debug("Uspesan oporavak od greske pri definiciji globalne promenljive na liniji " + errleft); :} {: RESULT=new ErrorVarDeclSemi(); :}
 ;
 
 VarList ::=
     (SingleVarDecl) Var:V1 {: RESULT=new SingleVarDecl(V1); RESULT.setLine(V1left); :}
     | (VarListDecl) VarList:V1 COMMA Var:V2 {: RESULT=new VarListDecl(V1, V2); RESULT.setLine(V1left); :}
+    | (ErrorVarDeclComma) error:err
+        {: parser.log.debug("Uspesan oporavak od greske pri definiciji globalne promenljive na liniji " + errleft); :} {: RESULT=new ErrorVarDeclComma(); :}
 ;
 
 Var ::=
@@ -214,12 +227,19 @@ MatchedStatement ::=
     | (PrintExprNumber) PRINT LPARENT Expr:E1 COMMA NUMBER:N2 RPARENT SEMICOLON {: RESULT=new PrintExprNumber(E1, N2); RESULT.setLine(E1left); :}
     | (ForStmt) FOR LPARENT DesignatorStmtList:D1 SEMICOLON OptCondFact:O2 SEMICOLON DesignatorStmtList:D3 RPARENT MatchedStatement:M4 {: RESULT=new ForStmt(D1, O2, D3, M4); RESULT.setLine(D1left); :}
     | (StmtList) LBRACE StatementList:S1 RBRACE {: RESULT=new StmtList(S1); RESULT.setLine(S1left); :}
+    | (ErrorAssign) error:err SEMICOLON
+        {: parser.log.debug("Uspesan oporavak od greske pri dodeli vrednosti."); :} {: RESULT=new ErrorAssign(); :}
 ;
 
 DesignatorStmtList ::=
-    (DesignatorStatements) DesignatorStmtList:D1 DesignatorStatement:D2 {: RESULT=new DesignatorStatements(D1, D2); RESULT.setLine(D1left); :}
+    (DesignatorStatements) DesignatorStmtList:D1 DesignatorStatementElem:D2 {: RESULT=new DesignatorStatements(D1, D2); RESULT.setLine(D1left); :}
     | (NoDesignatorStatements) {: RESULT=new NoDesignatorStatements(); :} /* epsilon */
 ;
+
+DesignatorStatementElem ::=
+    (SingleDesignatorStmt) DesignatorStatement:D1 {: RESULT=new SingleDesignatorStmt(D1); RESULT.setLine(D1left); :}
+    | (MultipleDesignatorStmt) DesignatorStatementElem:D1 COMMA DesignatorStatement:D2 {: RESULT=new MultipleDesignatorStmt(D1, D2); RESULT.setLine(D1left); :}
+    ;
 
 DesignatorStatement ::=
     (DesignAssign) Designator:D1 ASSIGN Expr:E2 {: RESULT=new DesignAssign(D1, E2); RESULT.setLine(D1left); :}

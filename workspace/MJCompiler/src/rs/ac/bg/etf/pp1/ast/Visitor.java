@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 7/8/2024 12:57:53
+// 8/8/2024 14:38:34
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -13,6 +13,7 @@ public interface Visitor {
     public void visit(MatchedStatement MatchedStatement);
     public void visit(Relop Relop);
     public void visit(TermList TermList);
+    public void visit(DesignatorElemList DesignatorElemList);
     public void visit(Var Var);
     public void visit(StatementList StatementList);
     public void visit(FactorList FactorList);
@@ -26,16 +27,22 @@ public interface Visitor {
     public void visit(DesignatorStmtList DesignatorStmtList);
     public void visit(Expr Expr);
     public void visit(ActPars ActPars);
+    public void visit(DesignatorList DesignatorList);
     public void visit(DesignatorStatement DesignatorStatement);
     public void visit(Const Const);
     public void visit(UnmatchedStatement UnmatchedStatement);
+    public void visit(DesignatorElems DesignatorElems);
     public void visit(Decl Decl);
+    public void visit(OptDesignator OptDesignator);
     public void visit(Statement Statement);
+    public void visit(VarDecl VarDecl);
     public void visit(IdentOrExpr IdentOrExpr);
     public void visit(IdentOrExprList IdentOrExprList);
+    public void visit(ConstDecl ConstDecl);
     public void visit(OptActPars OptActPars);
     public void visit(CondFact CondFact);
     public void visit(MethodDeclList MethodDeclList);
+    public void visit(DesignatorStatementElem DesignatorStatementElem);
     public void visit(FormPars FormPars);
     public void visit(FormParam FormParam);
     public void visit(LocalVarDeclList LocalVarDeclList);
@@ -88,8 +95,11 @@ public interface Visitor {
     public void visit(DesignInc DesignInc);
     public void visit(DesingActPars DesingActPars);
     public void visit(DesignAssign DesignAssign);
+    public void visit(MultipleDesignatorStmt MultipleDesignatorStmt);
+    public void visit(SingleDesignatorStmt SingleDesignatorStmt);
     public void visit(NoDesignatorStatements NoDesignatorStatements);
     public void visit(DesignatorStatements DesignatorStatements);
+    public void visit(ErrorAssign ErrorAssign);
     public void visit(StmtList StmtList);
     public void visit(ForStmt ForStmt);
     public void visit(PrintExprNumber PrintExprNumber);
@@ -124,16 +134,20 @@ public interface Visitor {
     public void visit(VarMatrix VarMatrix);
     public void visit(VarArray VarArray);
     public void visit(VarElement VarElement);
+    public void visit(ErrorVarDeclComma ErrorVarDeclComma);
     public void visit(VarListDecl VarListDecl);
     public void visit(SingleVarDecl SingleVarDecl);
-    public void visit(VarDecl VarDecl);
+    public void visit(ErrorVarDeclSemi ErrorVarDeclSemi);
+    public void visit(VariableDeclaration VariableDeclaration);
     public void visit(ConstBool ConstBool);
     public void visit(ConstChar ConstChar);
     public void visit(ConstNumber ConstNumber);
     public void visit(SingleConst SingleConst);
+    public void visit(ErrorConstDeclComma ErrorConstDeclComma);
     public void visit(ConsantListDecl ConsantListDecl);
     public void visit(SingleConstantDecl SingleConstantDecl);
-    public void visit(ConstDecl ConstDecl);
+    public void visit(ErrorConstDeclSemi ErrorConstDeclSemi);
+    public void visit(ConstantDeclaration ConstantDeclaration);
     public void visit(VarDeclaration VarDeclaration);
     public void visit(ConstDeclaration ConstDeclaration);
     public void visit(NoDeclarationList NoDeclarationList);

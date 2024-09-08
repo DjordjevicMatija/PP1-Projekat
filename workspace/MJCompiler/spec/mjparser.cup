@@ -91,14 +91,19 @@ nonterminal Relop;
 nonterminal Addop;
 nonterminal Mulop;
 nonterminal DesignatorStmtList;
+nonterminal DesignatorStatementElem;
 nonterminal DesignatorStatement;
+nonterminal DesignatorList;
+nonterminal DesignatorElems;
+nonterminal DesignatorElemList;
+nonterminal OptDesignator;
 nonterminal OptCondFact;
 nonterminal OptActPars;
 nonterminal ActPars;
 
 
 Program ::= (Program)
-    PROG ProgName DeclList  LBRACE MethodDeclList RBRACE
+    PROG ProgName DeclList LBRACE MethodDeclList RBRACE
 ;
 
 ProgName ::= (ProgName)
@@ -106,7 +111,7 @@ ProgName ::= (ProgName)
 ;
 
 DeclList ::=
-    (DeclarationList) DeclList  Decl
+    (DeclarationList) DeclList Decl
     | (NoDeclarationList) /* epsilon */
 ;
 
@@ -115,13 +120,17 @@ Decl ::=
     | (VarDeclaration) VarDecl
 ;
 
-ConstDecl ::= (ConstDecl)
-    CONST Type ConstList SEMICOLON
+ConstDecl ::=
+    (ConstantDeclaration) CONST Type ConstList SEMICOLON
+    | (ErrorConstDeclSemi) CONST error:err SEMICOLON
+        {: parser.log.debug("Uspesan oporavak od greske pri definiciji globalne konstante na liniji " + errleft); :}
 ;
 
 ConstList ::=
     (SingleConstantDecl) SingleConst
     | (ConsantListDecl) ConstList COMMA SingleConst
+    | (ErrorConstDeclComma) error:err
+        {: parser.log.debug("Uspesan oporavak od greske pri definiciji globalne konstante na liniji " + errleft); :}
 ;
 
 SingleConst ::= (SingleConst)
@@ -134,13 +143,17 @@ Const ::=
     | (ConstBool) BOOL
 ;
 
-VarDecl ::= (VarDecl)
-    Type VarList SEMICOLON
+VarDecl ::=
+    (VariableDeclaration) Type VarList SEMICOLON
+    | (ErrorVarDeclSemi) error:err SEMICOLON
+        {: parser.log.debug("Uspesan oporavak od greske pri definiciji globalne promenljive na liniji " + errleft); :}
 ;
 
 VarList ::=
     (SingleVarDecl) Var
     | (VarListDecl) VarList COMMA Var
+    | (ErrorVarDeclComma) error:err
+        {: parser.log.debug("Uspesan oporavak od greske pri definiciji globalne promenljive na liniji " + errleft); :}
 ;
 
 Var ::=
@@ -214,12 +227,19 @@ MatchedStatement ::=
     | (PrintExprNumber) PRINT LPARENT Expr COMMA NUMBER RPARENT SEMICOLON
     | (ForStmt) FOR LPARENT DesignatorStmtList SEMICOLON OptCondFact SEMICOLON DesignatorStmtList RPARENT MatchedStatement
     | (StmtList) LBRACE StatementList RBRACE
+    | (ErrorAssign) error:err SEMICOLON
+        {: parser.log.debug("Uspesan oporavak od greske pri dodeli vrednosti."); :}
 ;
 
 DesignatorStmtList ::=
-    (DesignatorStatements) DesignatorStmtList DesignatorStatement
+    (DesignatorStatements) DesignatorStmtList DesignatorStatementElem
     | (NoDesignatorStatements) /* epsilon */
 ;
+
+DesignatorStatementElem ::=
+    (SingleDesignatorStmt) DesignatorStatement
+    | (MultipleDesignatorStmt) DesignatorStatementElem COMMA DesignatorStatement
+    ;
 
 DesignatorStatement ::=
     (DesignAssign) Designator ASSIGN Expr

@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 7/8/2024 12:57:53
+// 8/8/2024 14:38:34
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -8,13 +8,13 @@ package rs.ac.bg.etf.pp1.ast;
 public class DesignatorStatements extends DesignatorStmtList {
 
     private DesignatorStmtList DesignatorStmtList;
-    private DesignatorStatement DesignatorStatement;
+    private DesignatorStatementElem DesignatorStatementElem;
 
-    public DesignatorStatements (DesignatorStmtList DesignatorStmtList, DesignatorStatement DesignatorStatement) {
+    public DesignatorStatements (DesignatorStmtList DesignatorStmtList, DesignatorStatementElem DesignatorStatementElem) {
         this.DesignatorStmtList=DesignatorStmtList;
         if(DesignatorStmtList!=null) DesignatorStmtList.setParent(this);
-        this.DesignatorStatement=DesignatorStatement;
-        if(DesignatorStatement!=null) DesignatorStatement.setParent(this);
+        this.DesignatorStatementElem=DesignatorStatementElem;
+        if(DesignatorStatementElem!=null) DesignatorStatementElem.setParent(this);
     }
 
     public DesignatorStmtList getDesignatorStmtList() {
@@ -25,12 +25,12 @@ public class DesignatorStatements extends DesignatorStmtList {
         this.DesignatorStmtList=DesignatorStmtList;
     }
 
-    public DesignatorStatement getDesignatorStatement() {
-        return DesignatorStatement;
+    public DesignatorStatementElem getDesignatorStatementElem() {
+        return DesignatorStatementElem;
     }
 
-    public void setDesignatorStatement(DesignatorStatement DesignatorStatement) {
-        this.DesignatorStatement=DesignatorStatement;
+    public void setDesignatorStatementElem(DesignatorStatementElem DesignatorStatementElem) {
+        this.DesignatorStatementElem=DesignatorStatementElem;
     }
 
     public void accept(Visitor visitor) {
@@ -39,18 +39,18 @@ public class DesignatorStatements extends DesignatorStmtList {
 
     public void childrenAccept(Visitor visitor) {
         if(DesignatorStmtList!=null) DesignatorStmtList.accept(visitor);
-        if(DesignatorStatement!=null) DesignatorStatement.accept(visitor);
+        if(DesignatorStatementElem!=null) DesignatorStatementElem.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
         if(DesignatorStmtList!=null) DesignatorStmtList.traverseTopDown(visitor);
-        if(DesignatorStatement!=null) DesignatorStatement.traverseTopDown(visitor);
+        if(DesignatorStatementElem!=null) DesignatorStatementElem.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
         if(DesignatorStmtList!=null) DesignatorStmtList.traverseBottomUp(visitor);
-        if(DesignatorStatement!=null) DesignatorStatement.traverseBottomUp(visitor);
+        if(DesignatorStatementElem!=null) DesignatorStatementElem.traverseBottomUp(visitor);
         accept(visitor);
     }
 
@@ -65,8 +65,8 @@ public class DesignatorStatements extends DesignatorStmtList {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(DesignatorStatement!=null)
-            buffer.append(DesignatorStatement.toString("  "+tab));
+        if(DesignatorStatementElem!=null)
+            buffer.append(DesignatorStatementElem.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");

@@ -1,6 +1,7 @@
 program MJProgram
-	int x, y;
-	const char z = 'a';
+	int x+;
+	const char w = 'a'5, v = 'b';
+	const 2 int t = 5a;
 	int arr[];
 	int mat[][];
 {
@@ -9,5 +10,10 @@ program MJProgram
 		print(1);
 		arr = new int[5];
 		mat = new int[2][3+(2-1)];
+		x = 1;
+		y = 2;
+		for(;;){}
+		if(x == y){}
+		else{}
 	}
 }
