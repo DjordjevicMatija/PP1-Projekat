@@ -5,24 +5,13 @@
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class FormParamList extends FormPars {
+public class SingleFormParam extends FormPars {
 
-    private FormPars FormPars;
     private FormParam FormParam;
 
-    public FormParamList (FormPars FormPars, FormParam FormParam) {
-        this.FormPars=FormPars;
-        if(FormPars!=null) FormPars.setParent(this);
+    public SingleFormParam (FormParam FormParam) {
         this.FormParam=FormParam;
         if(FormParam!=null) FormParam.setParent(this);
-    }
-
-    public FormPars getFormPars() {
-        return FormPars;
-    }
-
-    public void setFormPars(FormPars FormPars) {
-        this.FormPars=FormPars;
     }
 
     public FormParam getFormParam() {
@@ -38,18 +27,15 @@ public class FormParamList extends FormPars {
     }
 
     public void childrenAccept(Visitor visitor) {
-        if(FormPars!=null) FormPars.accept(visitor);
         if(FormParam!=null) FormParam.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
-        if(FormPars!=null) FormPars.traverseTopDown(visitor);
         if(FormParam!=null) FormParam.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
-        if(FormPars!=null) FormPars.traverseBottomUp(visitor);
         if(FormParam!=null) FormParam.traverseBottomUp(visitor);
         accept(visitor);
     }
@@ -57,13 +43,7 @@ public class FormParamList extends FormPars {
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("FormParamList(\n");
-
-        if(FormPars!=null)
-            buffer.append(FormPars.toString("  "+tab));
-        else
-            buffer.append(tab+"  null");
-        buffer.append("\n");
+        buffer.append("SingleFormParam(\n");
 
         if(FormParam!=null)
             buffer.append(FormParam.toString("  "+tab));
@@ -72,7 +52,7 @@ public class FormParamList extends FormPars {
         buffer.append("\n");
 
         buffer.append(tab);
-        buffer.append(") [FormParamList]");
+        buffer.append(") [SingleFormParam]");
         return buffer.toString();
     }
 }

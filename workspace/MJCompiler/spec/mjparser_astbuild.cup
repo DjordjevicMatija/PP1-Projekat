@@ -52,24 +52,23 @@ terminal Character CHAR;
 terminal Boolean BOOL;
 terminal String IDENT;
 
-nonterminal Program Program;
-nonterminal ProgName ProgName;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Program;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName;
 nonterminal DeclList DeclList;
 nonterminal Decl Decl;
 nonterminal ConstDecl ConstDecl;
 nonterminal ConstList ConstList;
-nonterminal SingleConst SingleConst;
-nonterminal Const Const;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Const;
 nonterminal VarDecl VarDecl;
 nonterminal VarList VarList;
-nonterminal Var Var;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Var;
 nonterminal MethodDeclList MethodDeclList;
-nonterminal MethodDecl MethodDecl;
-nonterminal Method Method;
-nonterminal MethodName MethodName;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Method;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj MethodName;
+nonterminal MethodPars MethodPars;
 nonterminal FormPars FormPars;
-nonterminal FormParam FormParam;
-nonterminal Type Type;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj FormParam;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Type;
 nonterminal LocalVarDeclList LocalVarDeclList;
 nonterminal StatementList StatementList;
 nonterminal Statement Statement;
@@ -87,6 +86,7 @@ nonterminal Designator Designator;
 nonterminal IdentOrExprList IdentOrExprList;
 nonterminal IdentOrExpr IdentOrExpr;
 nonterminal Label Label;
+nonterminal Assignop Assignop;
 nonterminal Relop Relop;
 nonterminal Addop Addop;
 nonterminal Mulop Mulop;
@@ -103,11 +103,11 @@ nonterminal ActPars ActPars;
 
 
 Program ::= (Program)
-    PROG ProgName:P1 DeclList:D2 LBRACE MethodDeclList:M3 RBRACE {: RESULT=new Program(P1, D2, M3); RESULT.setLine(P1left); :}
+    PROG ProgName:pName DeclList:D1 LBRACE MethodDeclList:M2 RBRACE {: RESULT=new Program(pName, D1, M2); RESULT.setLine(pNameleft); :}
 ;
-
+ 
 ProgName ::= (ProgName)
-    IDENT:I1 {: RESULT=new ProgName(I1); RESULT.setLine(I1left); :}
+    IDENT:progName {: RESULT=new ProgName(progName); RESULT.setLine(progNameleft); :}
 ;
 
 DeclList ::=
@@ -127,20 +127,16 @@ ConstDecl ::=
 ;
 
 ConstList ::=
-    (SingleConstantDecl) SingleConst:S1 {: RESULT=new SingleConstantDecl(S1); RESULT.setLine(S1left); :}
-    | (ConsantListDecl) ConstList:C1 COMMA SingleConst:S2 {: RESULT=new ConsantListDecl(C1, S2); RESULT.setLine(C1left); :}
+    (SingleConstantDecl) Const:C1 {: RESULT=new SingleConstantDecl(C1); RESULT.setLine(C1left); :}
+    | (ConsantListDecl) ConstList:C1 COMMA Const:C2 {: RESULT=new ConsantListDecl(C1, C2); RESULT.setLine(C1left); :}
     | (ErrorConstDeclComma) error:err
         {: parser.log.debug("Uspesan oporavak od greske pri definiciji globalne konstante na liniji " + errleft); :} {: RESULT=new ErrorConstDeclComma(); :}
 ;
 
-SingleConst ::= (SingleConst)
-    IDENT:I1 ASSIGN Const:C2 {: RESULT=new SingleConst(I1, C2); RESULT.setLine(I1left); :}
-;
-
 Const ::=
-    (ConstNumber) NUMBER:N1 {: RESULT=new ConstNumber(N1); RESULT.setLine(N1left); :}
-    | (ConstChar) CHAR:C1 {: RESULT=new ConstChar(C1); RESULT.setLine(C1left); :}
-    | (ConstBool) BOOL:B1 {: RESULT=new ConstBool(B1); RESULT.setLine(B1left); :}
+    (ConstNumber) IDENT:constName ASSIGN NUMBER:N1 {: RESULT=new ConstNumber(constName, N1); RESULT.setLine(constNameleft); :}
+    | (ConstChar) IDENT:constName ASSIGN CHAR:C1 {: RESULT=new ConstChar(constName, C1); RESULT.setLine(constNameleft); :}
+    | (ConstBool) IDENT:constName ASSIGN BOOL:B1 {: RESULT=new ConstBool(constName, B1); RESULT.setLine(constNameleft); :}
 ;
 
 VarDecl ::=
@@ -157,42 +153,44 @@ VarList ::=
 ;
 
 Var ::=
-    (VarElement) IDENT:I1 {: RESULT=new VarElement(I1); RESULT.setLine(I1left); :}
-    | (VarArray) IDENT:I1 LBRACKET RBRACKET {: RESULT=new VarArray(I1); RESULT.setLine(I1left); :}
-    | (VarMatrix) IDENT:I1 LBRACKET RBRACKET LBRACKET RBRACKET {: RESULT=new VarMatrix(I1); RESULT.setLine(I1left); :}
+    (VarElement) IDENT:varName {: RESULT=new VarElement(varName); RESULT.setLine(varNameleft); :} 
+    | (VarArray) IDENT:varName LBRACKET RBRACKET {: RESULT=new VarArray(varName); RESULT.setLine(varNameleft); :}
+    | (VarMatrix) IDENT:varName  LBRACKET RBRACKET LBRACKET RBRACKET {: RESULT=new VarMatrix(varName); RESULT.setLine(varNameleft); :}
 ;
 
 MethodDeclList ::=
-    (MethodDeclarationList) MethodDeclList:M1 MethodDecl:M2 {: RESULT=new MethodDeclarationList(M1, M2); RESULT.setLine(M1left); :}
+    (MethodDeclarationList) MethodDeclList:M1 Method:M2 {: RESULT=new MethodDeclarationList(M1, M2); RESULT.setLine(M1left); :}
     | (NoMethodDeclarationList) {: RESULT=new NoMethodDeclarationList(); :} /* epsilon */
 ;
 
-MethodDecl ::=
-    (TypeMethodDecl) Type:T1 Method:M2 {: RESULT=new TypeMethodDecl(T1, M2); RESULT.setLine(T1left); :}
-    | (VoidMethodDecl) VOID Method:M1 {: RESULT=new VoidMethodDecl(M1); RESULT.setLine(M1left); :}
+Method ::=
+    (Method) MethodName:mName LPARENT MethodPars:M1 RPARENT LocalVarDeclList:L2 LBRACE StatementList:S3 RBRACE {: RESULT=new Method(mName, M1, L2, S3); RESULT.setLine(mNameleft); :}
 ;
 
-Method ::= (Method)
-    MethodName:M1 LPARENT FormPars:F2 RPARENT LocalVarDeclList:L3 LBRACE StatementList:S4 RBRACE {: RESULT=new Method(M1, F2, L3, S4); RESULT.setLine(M1left); :}
+MethodName ::=
+    (MethodTypeName) Type:returnType IDENT:methodName {: RESULT=new MethodTypeName(returnType, methodName); RESULT.setLine(returnTypeleft); :}
+    | (MethodVoidName) VOID IDENT:methodName {: RESULT=new MethodVoidName(methodName); RESULT.setLine(methodNameleft); :}
 ;
 
-MethodName ::= (MethodName)
-    IDENT:I1 {: RESULT=new MethodName(I1); RESULT.setLine(I1left); :}
+MethodPars ::=
+    (MethodParameters) FormPars:F1 {: RESULT=new MethodParameters(F1); RESULT.setLine(F1left); :}
+    | (ErrorMethodParameters) error:err
+        {: parser.log.debug("Uspesan oporavak od greske pri definiciji parametara metode na liniji " + errleft); :} {: RESULT=new ErrorMethodParameters(); :}
+    | (NoMethodParameters) {: RESULT=new NoMethodParameters(); :} /* epsilon */
 ;
 
 FormPars ::=
     (FormParamList) FormPars:F1 COMMA FormParam:F2 {: RESULT=new FormParamList(F1, F2); RESULT.setLine(F1left); :}
-    | (NoFormPars) {: RESULT=new NoFormPars(); :} /* epsilon */
+    | (SingleFormParam) FormParam:F1 {: RESULT=new SingleFormParam(F1); RESULT.setLine(F1left); :}
 ;
     
 FormParam ::=
-    (FormParamElement) Type:T1 IDENT:I2 {: RESULT=new FormParamElement(T1, I2); RESULT.setLine(T1left); :}
-    | (FormParamArray) Type:T1 IDENT:I2 LBRACKET RBRACKET {: RESULT=new FormParamArray(T1, I2); RESULT.setLine(T1left); :}
-    | (FormParamMatrix) Type:T1 IDENT:I2 LBRACKET RBRACKET LBRACKET RBRACKET {: RESULT=new FormParamMatrix(T1, I2); RESULT.setLine(T1left); :}
+    (FormParamElement) Type:paramType IDENT:paramName {: RESULT=new FormParamElement(paramType, paramName); RESULT.setLine(paramTypeleft); :}
+    | (FormParamArray) Type:paramType IDENT:paramName LBRACKET RBRACKET {: RESULT=new FormParamArray(paramType, paramName); RESULT.setLine(paramTypeleft); :}
 ;
 
 Type ::= (Type)
-    IDENT:I1 {: RESULT=new Type(I1); RESULT.setLine(I1left); :}
+    IDENT:typeName {: RESULT=new Type(typeName); RESULT.setLine(typeNameleft); :}
 ;
 
 LocalVarDeclList ::=
@@ -242,7 +240,7 @@ DesignatorStatementElem ::=
     ;
 
 DesignatorStatement ::=
-    (DesignAssign) Designator:D1 ASSIGN Expr:E2 {: RESULT=new DesignAssign(D1, E2); RESULT.setLine(D1left); :}
+    (DesignAssign) Designator:D1 Assignop:A2 Expr:E3 {: RESULT=new DesignAssign(D1, A2, E3); RESULT.setLine(D1left); :}
     | (DesingActPars) Designator:D1 LPARENT OptActPars:O2 RPARENT {: RESULT=new DesingActPars(D1, O2); RESULT.setLine(D1left); :}
     | (DesignInc) Designator:D1 INC {: RESULT=new DesignInc(D1); RESULT.setLine(D1left); :}
     | (DesignDec) Designator:D1 DEC {: RESULT=new DesignDec(D1); RESULT.setLine(D1left); :}
@@ -325,6 +323,10 @@ IdentOrExpr ::=
 
 Label ::= (Label)
     IDENT:I1 {: RESULT=new Label(I1); RESULT.setLine(I1left); :}
+;
+
+Assignop ::= (Assignop)
+    ASSIGN {: RESULT=new Assignop(); :}
 ;
 
 Relop ::=

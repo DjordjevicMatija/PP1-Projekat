@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 8/8/2024 14:38:34
+// 9/8/2024 23:56:53
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -8,12 +8,12 @@ package rs.ac.bg.etf.pp1.ast;
 public class FormParamArray extends FormParam {
 
     private Type Type;
-    private String I2;
+    private String paramName;
 
-    public FormParamArray (Type Type, String I2) {
+    public FormParamArray (Type Type, String paramName) {
         this.Type=Type;
         if(Type!=null) Type.setParent(this);
-        this.I2=I2;
+        this.paramName=paramName;
     }
 
     public Type getType() {
@@ -24,12 +24,12 @@ public class FormParamArray extends FormParam {
         this.Type=Type;
     }
 
-    public String getI2() {
-        return I2;
+    public String getParamName() {
+        return paramName;
     }
 
-    public void setI2(String I2) {
-        this.I2=I2;
+    public void setParamName(String paramName) {
+        this.paramName=paramName;
     }
 
     public void accept(Visitor visitor) {
@@ -61,7 +61,7 @@ public class FormParamArray extends FormParam {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        buffer.append(" "+tab+I2);
+        buffer.append(" "+tab+paramName);
         buffer.append("\n");
 
         buffer.append(tab);

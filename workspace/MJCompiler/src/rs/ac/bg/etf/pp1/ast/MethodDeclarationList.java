@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 8/8/2024 14:38:34
+// 9/8/2024 23:56:53
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -8,13 +8,13 @@ package rs.ac.bg.etf.pp1.ast;
 public class MethodDeclarationList extends MethodDeclList {
 
     private MethodDeclList MethodDeclList;
-    private MethodDecl MethodDecl;
+    private Method Method;
 
-    public MethodDeclarationList (MethodDeclList MethodDeclList, MethodDecl MethodDecl) {
+    public MethodDeclarationList (MethodDeclList MethodDeclList, Method Method) {
         this.MethodDeclList=MethodDeclList;
         if(MethodDeclList!=null) MethodDeclList.setParent(this);
-        this.MethodDecl=MethodDecl;
-        if(MethodDecl!=null) MethodDecl.setParent(this);
+        this.Method=Method;
+        if(Method!=null) Method.setParent(this);
     }
 
     public MethodDeclList getMethodDeclList() {
@@ -25,12 +25,12 @@ public class MethodDeclarationList extends MethodDeclList {
         this.MethodDeclList=MethodDeclList;
     }
 
-    public MethodDecl getMethodDecl() {
-        return MethodDecl;
+    public Method getMethod() {
+        return Method;
     }
 
-    public void setMethodDecl(MethodDecl MethodDecl) {
-        this.MethodDecl=MethodDecl;
+    public void setMethod(Method Method) {
+        this.Method=Method;
     }
 
     public void accept(Visitor visitor) {
@@ -39,18 +39,18 @@ public class MethodDeclarationList extends MethodDeclList {
 
     public void childrenAccept(Visitor visitor) {
         if(MethodDeclList!=null) MethodDeclList.accept(visitor);
-        if(MethodDecl!=null) MethodDecl.accept(visitor);
+        if(Method!=null) Method.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
         if(MethodDeclList!=null) MethodDeclList.traverseTopDown(visitor);
-        if(MethodDecl!=null) MethodDecl.traverseTopDown(visitor);
+        if(Method!=null) Method.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
         if(MethodDeclList!=null) MethodDeclList.traverseBottomUp(visitor);
-        if(MethodDecl!=null) MethodDecl.traverseBottomUp(visitor);
+        if(Method!=null) Method.traverseBottomUp(visitor);
         accept(visitor);
     }
 
@@ -65,8 +65,8 @@ public class MethodDeclarationList extends MethodDeclList {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(MethodDecl!=null)
-            buffer.append(MethodDecl.toString("  "+tab));
+        if(Method!=null)
+            buffer.append(Method.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");

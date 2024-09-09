@@ -52,24 +52,23 @@ terminal Character CHAR;
 terminal Boolean BOOL;
 terminal String IDENT;
 
-nonterminal Program;
-nonterminal ProgName;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Program;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName;
 nonterminal DeclList;
 nonterminal Decl;
 nonterminal ConstDecl;
 nonterminal ConstList;
-nonterminal SingleConst;
-nonterminal Const;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Const;
 nonterminal VarDecl;
 nonterminal VarList;
-nonterminal Var;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Var;
 nonterminal MethodDeclList;
-nonterminal MethodDecl;
-nonterminal Method;
-nonterminal MethodName;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Method;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj MethodName;
+nonterminal MethodPars;
 nonterminal FormPars;
-nonterminal FormParam;
-nonterminal Type;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj FormParam;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Type;
 nonterminal LocalVarDeclList;
 nonterminal StatementList;
 nonterminal Statement;
@@ -87,6 +86,7 @@ nonterminal Designator;
 nonterminal IdentOrExprList;
 nonterminal IdentOrExpr;
 nonterminal Label;
+nonterminal Assignop;
 nonterminal Relop;
 nonterminal Addop;
 nonterminal Mulop;
@@ -103,11 +103,11 @@ nonterminal ActPars;
 
 
 Program ::= (Program)
-    PROG ProgName DeclList LBRACE MethodDeclList RBRACE
+    PROG ProgName:pName DeclList LBRACE MethodDeclList RBRACE
 ;
-
+ 
 ProgName ::= (ProgName)
-    IDENT
+    IDENT:progName
 ;
 
 DeclList ::=
@@ -127,20 +127,16 @@ ConstDecl ::=
 ;
 
 ConstList ::=
-    (SingleConstantDecl) SingleConst
-    | (ConsantListDecl) ConstList COMMA SingleConst
+    (SingleConstantDecl) Const
+    | (ConsantListDecl) ConstList COMMA Const
     | (ErrorConstDeclComma) error:err
         {: parser.log.debug("Uspesan oporavak od greske pri definiciji globalne konstante na liniji " + errleft); :}
 ;
 
-SingleConst ::= (SingleConst)
-    IDENT ASSIGN Const
-;
-
 Const ::=
-    (ConstNumber) NUMBER
-    | (ConstChar) CHAR
-    | (ConstBool) BOOL
+    (ConstNumber) IDENT:constName ASSIGN NUMBER
+    | (ConstChar) IDENT:constName ASSIGN CHAR
+    | (ConstBool) IDENT:constName ASSIGN BOOL
 ;
 
 VarDecl ::=
@@ -157,42 +153,44 @@ VarList ::=
 ;
 
 Var ::=
-    (VarElement) IDENT
-    | (VarArray) IDENT LBRACKET RBRACKET
-    | (VarMatrix) IDENT LBRACKET RBRACKET LBRACKET RBRACKET
+    (VarElement) IDENT:varName 
+    | (VarArray) IDENT:varName LBRACKET RBRACKET
+    | (VarMatrix) IDENT:varName  LBRACKET RBRACKET LBRACKET RBRACKET
 ;
 
 MethodDeclList ::=
-    (MethodDeclarationList) MethodDeclList MethodDecl
+    (MethodDeclarationList) MethodDeclList Method
     | (NoMethodDeclarationList) /* epsilon */
 ;
 
-MethodDecl ::=
-    (TypeMethodDecl) Type Method
-    | (VoidMethodDecl) VOID Method
+Method ::=
+    (Method) MethodName:mName LPARENT MethodPars RPARENT LocalVarDeclList LBRACE StatementList RBRACE
 ;
 
-Method ::= (Method)
-    MethodName LPARENT FormPars RPARENT LocalVarDeclList LBRACE StatementList RBRACE
+MethodName ::=
+    (MethodTypeName) Type:returnType IDENT:methodName
+    | (MethodVoidName) VOID IDENT:methodName
 ;
 
-MethodName ::= (MethodName)
-    IDENT
+MethodPars ::=
+    (MethodParameters) FormPars
+    | (ErrorMethodParameters) error:err
+        {: parser.log.debug("Uspesan oporavak od greske pri definiciji parametara metode na liniji " + errleft); :}
+    | (NoMethodParameters) /* epsilon */
 ;
 
 FormPars ::=
     (FormParamList) FormPars COMMA FormParam
-    | (NoFormPars) /* epsilon */
+    | (SingleFormParam) FormParam
 ;
     
 FormParam ::=
-    (FormParamElement) Type IDENT
-    | (FormParamArray) Type IDENT LBRACKET RBRACKET
-    | (FormParamMatrix) Type IDENT LBRACKET RBRACKET LBRACKET RBRACKET
+    (FormParamElement) Type:paramType IDENT:paramName
+    | (FormParamArray) Type:paramType IDENT:paramName LBRACKET RBRACKET
 ;
 
 Type ::= (Type)
-    IDENT
+    IDENT:typeName
 ;
 
 LocalVarDeclList ::=
@@ -242,7 +240,7 @@ DesignatorStatementElem ::=
     ;
 
 DesignatorStatement ::=
-    (DesignAssign) Designator ASSIGN Expr
+    (DesignAssign) Designator Assignop Expr
     | (DesingActPars) Designator LPARENT OptActPars RPARENT
     | (DesignInc) Designator INC
     | (DesignDec) Designator DEC
@@ -325,6 +323,10 @@ IdentOrExpr ::=
 
 Label ::= (Label)
     IDENT
+;
+
+Assignop ::= (Assignop)
+    ASSIGN
 ;
 
 Relop ::=

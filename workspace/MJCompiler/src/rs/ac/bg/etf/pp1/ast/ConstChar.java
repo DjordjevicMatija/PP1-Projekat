@@ -1,16 +1,26 @@
 // generated with ast extension for cup
 // version 0.8
-// 8/8/2024 14:38:34
+// 9/8/2024 23:56:53
 
 
 package rs.ac.bg.etf.pp1.ast;
 
 public class ConstChar extends Const {
 
+    private String constName;
     private Character C1;
 
-    public ConstChar (Character C1) {
+    public ConstChar (String constName, Character C1) {
+        this.constName=constName;
         this.C1=C1;
+    }
+
+    public String getConstName() {
+        return constName;
+    }
+
+    public void setConstName(String constName) {
+        this.constName=constName;
     }
 
     public Character getC1() {
@@ -40,6 +50,9 @@ public class ConstChar extends Const {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
         buffer.append("ConstChar(\n");
+
+        buffer.append(" "+tab+constName);
+        buffer.append("\n");
 
         buffer.append(" "+tab+C1);
         buffer.append("\n");

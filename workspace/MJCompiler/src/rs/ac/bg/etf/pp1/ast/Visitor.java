@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 8/8/2024 14:38:34
+// 9/8/2024 23:56:54
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -8,7 +8,6 @@ package rs.ac.bg.etf.pp1.ast;
 public interface Visitor { 
 
     public void visit(Mulop Mulop);
-    public void visit(MethodDecl MethodDecl);
     public void visit(OptCondFact OptCondFact);
     public void visit(MatchedStatement MatchedStatement);
     public void visit(Relop Relop);
@@ -23,7 +22,9 @@ public interface Visitor {
     public void visit(VarList VarList);
     public void visit(ConstList ConstList);
     public void visit(DeclList DeclList);
+    public void visit(MethodName MethodName);
     public void visit(Condition Condition);
+    public void visit(MethodPars MethodPars);
     public void visit(DesignatorStmtList DesignatorStmtList);
     public void visit(Expr Expr);
     public void visit(ActPars ActPars);
@@ -57,6 +58,7 @@ public interface Visitor {
     public void visit(RelopGreater RelopGreater);
     public void visit(RelopNotEquals RelopNotEquals);
     public void visit(RelopEquals RelopEquals);
+    public void visit(Assignop Assignop);
     public void visit(Label Label);
     public void visit(SingleExpr SingleExpr);
     public void visit(SingleIdent SingleIdent);
@@ -120,15 +122,16 @@ public interface Visitor {
     public void visit(NoLocalVarDeclarations NoLocalVarDeclarations);
     public void visit(LocalVarDeclarations LocalVarDeclarations);
     public void visit(Type Type);
-    public void visit(FormParamMatrix FormParamMatrix);
     public void visit(FormParamArray FormParamArray);
     public void visit(FormParamElement FormParamElement);
-    public void visit(NoFormPars NoFormPars);
+    public void visit(SingleFormParam SingleFormParam);
     public void visit(FormParamList FormParamList);
-    public void visit(MethodName MethodName);
+    public void visit(NoMethodParameters NoMethodParameters);
+    public void visit(ErrorMethodParameters ErrorMethodParameters);
+    public void visit(MethodParameters MethodParameters);
+    public void visit(MethodVoidName MethodVoidName);
+    public void visit(MethodTypeName MethodTypeName);
     public void visit(Method Method);
-    public void visit(VoidMethodDecl VoidMethodDecl);
-    public void visit(TypeMethodDecl TypeMethodDecl);
     public void visit(NoMethodDeclarationList NoMethodDeclarationList);
     public void visit(MethodDeclarationList MethodDeclarationList);
     public void visit(VarMatrix VarMatrix);
@@ -142,7 +145,6 @@ public interface Visitor {
     public void visit(ConstBool ConstBool);
     public void visit(ConstChar ConstChar);
     public void visit(ConstNumber ConstNumber);
-    public void visit(SingleConst SingleConst);
     public void visit(ErrorConstDeclComma ErrorConstDeclComma);
     public void visit(ConsantListDecl ConsantListDecl);
     public void visit(SingleConstantDecl SingleConstantDecl);

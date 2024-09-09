@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 8/8/2024 14:38:34
+// 9/8/2024 23:56:53
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -8,13 +8,13 @@ package rs.ac.bg.etf.pp1.ast;
 public class ConsantListDecl extends ConstList {
 
     private ConstList ConstList;
-    private SingleConst SingleConst;
+    private Const Const;
 
-    public ConsantListDecl (ConstList ConstList, SingleConst SingleConst) {
+    public ConsantListDecl (ConstList ConstList, Const Const) {
         this.ConstList=ConstList;
         if(ConstList!=null) ConstList.setParent(this);
-        this.SingleConst=SingleConst;
-        if(SingleConst!=null) SingleConst.setParent(this);
+        this.Const=Const;
+        if(Const!=null) Const.setParent(this);
     }
 
     public ConstList getConstList() {
@@ -25,12 +25,12 @@ public class ConsantListDecl extends ConstList {
         this.ConstList=ConstList;
     }
 
-    public SingleConst getSingleConst() {
-        return SingleConst;
+    public Const getConst() {
+        return Const;
     }
 
-    public void setSingleConst(SingleConst SingleConst) {
-        this.SingleConst=SingleConst;
+    public void setConst(Const Const) {
+        this.Const=Const;
     }
 
     public void accept(Visitor visitor) {
@@ -39,18 +39,18 @@ public class ConsantListDecl extends ConstList {
 
     public void childrenAccept(Visitor visitor) {
         if(ConstList!=null) ConstList.accept(visitor);
-        if(SingleConst!=null) SingleConst.accept(visitor);
+        if(Const!=null) Const.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
         if(ConstList!=null) ConstList.traverseTopDown(visitor);
-        if(SingleConst!=null) SingleConst.traverseTopDown(visitor);
+        if(Const!=null) Const.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
         if(ConstList!=null) ConstList.traverseBottomUp(visitor);
-        if(SingleConst!=null) SingleConst.traverseBottomUp(visitor);
+        if(Const!=null) Const.traverseBottomUp(visitor);
         accept(visitor);
     }
 
@@ -65,8 +65,8 @@ public class ConsantListDecl extends ConstList {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(SingleConst!=null)
-            buffer.append(SingleConst.toString("  "+tab));
+        if(Const!=null)
+            buffer.append(Const.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");

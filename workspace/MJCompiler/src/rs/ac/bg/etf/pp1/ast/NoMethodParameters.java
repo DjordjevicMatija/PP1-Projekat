@@ -1,13 +1,13 @@
 // generated with ast extension for cup
 // version 0.8
-// 9/8/2024 23:56:54
+// 9/8/2024 23:56:53
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class AddopPlus extends Addop {
+public class NoMethodParameters extends MethodPars {
 
-    public AddopPlus () {
+    public NoMethodParameters () {
     }
 
     public void accept(Visitor visitor) {
@@ -28,10 +28,10 @@ public class AddopPlus extends Addop {
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("AddopPlus(\n");
+        buffer.append("NoMethodParameters(\n");
 
         buffer.append(tab);
-        buffer.append(") [AddopPlus]");
+        buffer.append(") [NoMethodParameters]");
         return buffer.toString();
     }
 }

@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 8/8/2024 14:38:34
+// 9/8/2024 23:56:54
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -8,7 +8,6 @@ package rs.ac.bg.etf.pp1.ast;
 public abstract class VisitorAdaptor implements Visitor { 
 
     public void visit(Mulop Mulop) { }
-    public void visit(MethodDecl MethodDecl) { }
     public void visit(OptCondFact OptCondFact) { }
     public void visit(MatchedStatement MatchedStatement) { }
     public void visit(Relop Relop) { }
@@ -23,7 +22,9 @@ public abstract class VisitorAdaptor implements Visitor {
     public void visit(VarList VarList) { }
     public void visit(ConstList ConstList) { }
     public void visit(DeclList DeclList) { }
+    public void visit(MethodName MethodName) { }
     public void visit(Condition Condition) { }
+    public void visit(MethodPars MethodPars) { }
     public void visit(DesignatorStmtList DesignatorStmtList) { }
     public void visit(Expr Expr) { }
     public void visit(ActPars ActPars) { }
@@ -57,6 +58,7 @@ public abstract class VisitorAdaptor implements Visitor {
     public void visit(RelopGreater RelopGreater) { visit(); }
     public void visit(RelopNotEquals RelopNotEquals) { visit(); }
     public void visit(RelopEquals RelopEquals) { visit(); }
+    public void visit(Assignop Assignop) { visit(); }
     public void visit(Label Label) { visit(); }
     public void visit(SingleExpr SingleExpr) { visit(); }
     public void visit(SingleIdent SingleIdent) { visit(); }
@@ -120,15 +122,16 @@ public abstract class VisitorAdaptor implements Visitor {
     public void visit(NoLocalVarDeclarations NoLocalVarDeclarations) { visit(); }
     public void visit(LocalVarDeclarations LocalVarDeclarations) { visit(); }
     public void visit(Type Type) { visit(); }
-    public void visit(FormParamMatrix FormParamMatrix) { visit(); }
     public void visit(FormParamArray FormParamArray) { visit(); }
     public void visit(FormParamElement FormParamElement) { visit(); }
-    public void visit(NoFormPars NoFormPars) { visit(); }
+    public void visit(SingleFormParam SingleFormParam) { visit(); }
     public void visit(FormParamList FormParamList) { visit(); }
-    public void visit(MethodName MethodName) { visit(); }
+    public void visit(NoMethodParameters NoMethodParameters) { visit(); }
+    public void visit(ErrorMethodParameters ErrorMethodParameters) { visit(); }
+    public void visit(MethodParameters MethodParameters) { visit(); }
+    public void visit(MethodVoidName MethodVoidName) { visit(); }
+    public void visit(MethodTypeName MethodTypeName) { visit(); }
     public void visit(Method Method) { visit(); }
-    public void visit(VoidMethodDecl VoidMethodDecl) { visit(); }
-    public void visit(TypeMethodDecl TypeMethodDecl) { visit(); }
     public void visit(NoMethodDeclarationList NoMethodDeclarationList) { visit(); }
     public void visit(MethodDeclarationList MethodDeclarationList) { visit(); }
     public void visit(VarMatrix VarMatrix) { visit(); }
@@ -142,7 +145,6 @@ public abstract class VisitorAdaptor implements Visitor {
     public void visit(ConstBool ConstBool) { visit(); }
     public void visit(ConstChar ConstChar) { visit(); }
     public void visit(ConstNumber ConstNumber) { visit(); }
-    public void visit(SingleConst SingleConst) { visit(); }
     public void visit(ErrorConstDeclComma ErrorConstDeclComma) { visit(); }
     public void visit(ConsantListDecl ConsantListDecl) { visit(); }
     public void visit(SingleConstantDecl SingleConstantDecl) { visit(); }

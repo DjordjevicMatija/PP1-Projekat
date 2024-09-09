@@ -1,19 +1,19 @@
 // generated with ast extension for cup
 // version 0.8
-// 8/8/2024 14:38:34
+// 9/8/2024 23:56:53
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class FormParamMatrix extends FormParam {
+public class MethodTypeName extends MethodName {
 
     private Type Type;
-    private String I2;
+    private String methodName;
 
-    public FormParamMatrix (Type Type, String I2) {
+    public MethodTypeName (Type Type, String methodName) {
         this.Type=Type;
         if(Type!=null) Type.setParent(this);
-        this.I2=I2;
+        this.methodName=methodName;
     }
 
     public Type getType() {
@@ -24,12 +24,12 @@ public class FormParamMatrix extends FormParam {
         this.Type=Type;
     }
 
-    public String getI2() {
-        return I2;
+    public String getMethodName() {
+        return methodName;
     }
 
-    public void setI2(String I2) {
-        this.I2=I2;
+    public void setMethodName(String methodName) {
+        this.methodName=methodName;
     }
 
     public void accept(Visitor visitor) {
@@ -53,7 +53,7 @@ public class FormParamMatrix extends FormParam {
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("FormParamMatrix(\n");
+        buffer.append("MethodTypeName(\n");
 
         if(Type!=null)
             buffer.append(Type.toString("  "+tab));
@@ -61,11 +61,11 @@ public class FormParamMatrix extends FormParam {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        buffer.append(" "+tab+I2);
+        buffer.append(" "+tab+methodName);
         buffer.append("\n");
 
         buffer.append(tab);
-        buffer.append(") [FormParamMatrix]");
+        buffer.append(") [MethodTypeName]");
         return buffer.toString();
     }
 }

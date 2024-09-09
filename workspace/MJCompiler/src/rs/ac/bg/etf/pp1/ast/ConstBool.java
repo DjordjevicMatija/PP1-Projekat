@@ -1,16 +1,26 @@
 // generated with ast extension for cup
 // version 0.8
-// 8/8/2024 14:38:34
+// 9/8/2024 23:56:53
 
 
 package rs.ac.bg.etf.pp1.ast;
 
 public class ConstBool extends Const {
 
+    private String constName;
     private Boolean B1;
 
-    public ConstBool (Boolean B1) {
+    public ConstBool (String constName, Boolean B1) {
+        this.constName=constName;
         this.B1=B1;
+    }
+
+    public String getConstName() {
+        return constName;
+    }
+
+    public void setConstName(String constName) {
+        this.constName=constName;
     }
 
     public Boolean getB1() {
@@ -40,6 +50,9 @@ public class ConstBool extends Const {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
         buffer.append("ConstBool(\n");
+
+        buffer.append(" "+tab+constName);
+        buffer.append("\n");
 
         buffer.append(" "+tab+B1);
         buffer.append("\n");

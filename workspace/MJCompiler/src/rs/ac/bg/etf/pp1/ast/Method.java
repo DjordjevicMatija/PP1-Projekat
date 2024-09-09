@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 8/8/2024 14:38:34
+// 9/8/2024 23:56:53
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -9,16 +9,18 @@ public class Method implements SyntaxNode {
 
     private SyntaxNode parent;
     private int line;
+    public rs.etf.pp1.symboltable.concepts.Obj obj = null;
+
     private MethodName MethodName;
-    private FormPars FormPars;
+    private MethodPars MethodPars;
     private LocalVarDeclList LocalVarDeclList;
     private StatementList StatementList;
 
-    public Method (MethodName MethodName, FormPars FormPars, LocalVarDeclList LocalVarDeclList, StatementList StatementList) {
+    public Method (MethodName MethodName, MethodPars MethodPars, LocalVarDeclList LocalVarDeclList, StatementList StatementList) {
         this.MethodName=MethodName;
         if(MethodName!=null) MethodName.setParent(this);
-        this.FormPars=FormPars;
-        if(FormPars!=null) FormPars.setParent(this);
+        this.MethodPars=MethodPars;
+        if(MethodPars!=null) MethodPars.setParent(this);
         this.LocalVarDeclList=LocalVarDeclList;
         if(LocalVarDeclList!=null) LocalVarDeclList.setParent(this);
         this.StatementList=StatementList;
@@ -33,12 +35,12 @@ public class Method implements SyntaxNode {
         this.MethodName=MethodName;
     }
 
-    public FormPars getFormPars() {
-        return FormPars;
+    public MethodPars getMethodPars() {
+        return MethodPars;
     }
 
-    public void setFormPars(FormPars FormPars) {
-        this.FormPars=FormPars;
+    public void setMethodPars(MethodPars MethodPars) {
+        this.MethodPars=MethodPars;
     }
 
     public LocalVarDeclList getLocalVarDeclList() {
@@ -79,7 +81,7 @@ public class Method implements SyntaxNode {
 
     public void childrenAccept(Visitor visitor) {
         if(MethodName!=null) MethodName.accept(visitor);
-        if(FormPars!=null) FormPars.accept(visitor);
+        if(MethodPars!=null) MethodPars.accept(visitor);
         if(LocalVarDeclList!=null) LocalVarDeclList.accept(visitor);
         if(StatementList!=null) StatementList.accept(visitor);
     }
@@ -87,14 +89,14 @@ public class Method implements SyntaxNode {
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
         if(MethodName!=null) MethodName.traverseTopDown(visitor);
-        if(FormPars!=null) FormPars.traverseTopDown(visitor);
+        if(MethodPars!=null) MethodPars.traverseTopDown(visitor);
         if(LocalVarDeclList!=null) LocalVarDeclList.traverseTopDown(visitor);
         if(StatementList!=null) StatementList.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
         if(MethodName!=null) MethodName.traverseBottomUp(visitor);
-        if(FormPars!=null) FormPars.traverseBottomUp(visitor);
+        if(MethodPars!=null) MethodPars.traverseBottomUp(visitor);
         if(LocalVarDeclList!=null) LocalVarDeclList.traverseBottomUp(visitor);
         if(StatementList!=null) StatementList.traverseBottomUp(visitor);
         accept(visitor);
@@ -111,8 +113,8 @@ public class Method implements SyntaxNode {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(FormPars!=null)
-            buffer.append(FormPars.toString("  "+tab));
+        if(MethodPars!=null)
+            buffer.append(MethodPars.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");
