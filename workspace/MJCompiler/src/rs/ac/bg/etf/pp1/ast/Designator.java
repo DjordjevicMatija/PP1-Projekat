@@ -1,38 +1,17 @@
 // generated with ast extension for cup
 // version 0.8
-// 11/8/2024 10:55:16
+// 11/8/2024 22:16:26
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class Designator implements SyntaxNode {
+public abstract class Designator implements SyntaxNode {
 
     private SyntaxNode parent;
+
     private int line;
-    private String I1;
-    private IdentOrExprList IdentOrExprList;
 
-    public Designator (String I1, IdentOrExprList IdentOrExprList) {
-        this.I1=I1;
-        this.IdentOrExprList=IdentOrExprList;
-        if(IdentOrExprList!=null) IdentOrExprList.setParent(this);
-    }
-
-    public String getI1() {
-        return I1;
-    }
-
-    public void setI1(String I1) {
-        this.I1=I1;
-    }
-
-    public IdentOrExprList getIdentOrExprList() {
-        return IdentOrExprList;
-    }
-
-    public void setIdentOrExprList(IdentOrExprList IdentOrExprList) {
-        this.IdentOrExprList=IdentOrExprList;
-    }
+    public rs.etf.pp1.symboltable.concepts.Obj obj = null;
 
     public SyntaxNode getParent() {
         return parent;
@@ -50,40 +29,11 @@ public class Designator implements SyntaxNode {
         this.line=line;
     }
 
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
+    public abstract void accept(Visitor visitor);
+    public abstract void childrenAccept(Visitor visitor);
+    public abstract void traverseTopDown(Visitor visitor);
+    public abstract void traverseBottomUp(Visitor visitor);
 
-    public void childrenAccept(Visitor visitor) {
-        if(IdentOrExprList!=null) IdentOrExprList.accept(visitor);
-    }
-
-    public void traverseTopDown(Visitor visitor) {
-        accept(visitor);
-        if(IdentOrExprList!=null) IdentOrExprList.traverseTopDown(visitor);
-    }
-
-    public void traverseBottomUp(Visitor visitor) {
-        if(IdentOrExprList!=null) IdentOrExprList.traverseBottomUp(visitor);
-        accept(visitor);
-    }
-
-    public String toString(String tab) {
-        StringBuffer buffer=new StringBuffer();
-        buffer.append(tab);
-        buffer.append("Designator(\n");
-
-        buffer.append(" "+tab+I1);
-        buffer.append("\n");
-
-        if(IdentOrExprList!=null)
-            buffer.append(IdentOrExprList.toString("  "+tab));
-        else
-            buffer.append(tab+"  null");
-        buffer.append("\n");
-
-        buffer.append(tab);
-        buffer.append(") [Designator]");
-        return buffer.toString();
-    }
+    public String toString() { return toString(""); }
+    public abstract String toString(String tab);
 }

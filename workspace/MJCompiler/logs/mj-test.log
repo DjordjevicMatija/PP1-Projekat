@@ -1,56 +1,70 @@
-INFO  17:25:52,546 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
-INFO  17:25:52,669 - #13 program
-INFO  17:25:52,669 - #47 MJProgram
-INFO  17:25:52,669 - #47 int
-INFO  17:25:52,672 - #47 x
-INFO  17:25:52,673 - #2 ;
-INFO  17:25:52,673 - #15 const
-INFO  17:25:52,674 - #47 int
-INFO  17:25:52,674 - #47 a
-INFO  17:25:52,674 - #35 =
-INFO  17:25:52,675 - #44 5
-INFO  17:25:52,675 - #2 ;
-INFO  17:25:52,675 - #10 {
-INFO  17:25:52,676 - #47 int
-INFO  17:25:52,677 - #47 fun
-INFO  17:25:52,677 - #6 (
-INFO  17:25:52,678 - #47 int
-INFO  17:25:52,678 - #47 abc
-INFO  17:25:52,678 - #7 )
-INFO  17:25:52,679 - #10 {
-INFO  17:25:52,680 - #11 }
-INFO  17:25:52,681 - #18 void
-INFO  17:25:52,682 - #47 main
-INFO  17:25:52,682 - #6 (
-INFO  17:25:52,683 - #47 int
-INFO  17:25:52,683 - #47 x
-INFO  17:25:52,683 - #4 ,
-INFO  17:25:52,683 - #47 bool
-INFO  17:25:52,683 - #47 b
-INFO  17:25:52,683 - #4 ,
-INFO  17:25:52,684 - #47 char
-INFO  17:25:52,684 - #47 c
-INFO  17:25:52,684 - #4 ,
-INFO  17:25:52,684 - #47 int
-INFO  17:25:52,684 - #47 arr
-INFO  17:25:52,684 - #8 [
-INFO  17:25:52,684 - #9 ]
-INFO  17:25:52,685 - #7 )
-INFO  17:25:52,685 - #47 int
-INFO  17:25:52,685 - #47 y
-INFO  17:25:52,685 - #2 ;
-INFO  17:25:52,685 - #47 char
-INFO  17:25:52,686 - #47 mat
-INFO  17:25:52,686 - #8 [
-INFO  17:25:52,686 - #9 ]
-INFO  17:25:52,686 - #8 [
-INFO  17:25:52,686 - #9 ]
-INFO  17:25:52,687 - #2 ;
-INFO  17:25:52,687 - #47 int
-INFO  17:25:52,687 - #47 abc
-INFO  17:25:52,687 - #2 ;
-INFO  17:25:52,688 - #10 {
-INFO  17:25:52,688 - #11 }
-INFO  17:25:52,688 - #11 }
-ERROR 17:25:52,726 - Semanticka greska: Funcija fun nema return iskaz! na liniji 6
-ERROR 17:25:52,727 - Semanticka greska: Ne postoji metoda void main() na liniji 1
+INFO  22:50:31,955 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
+INFO  22:50:32,090 - #13 program
+INFO  22:50:32,090 - #47 MJProgram
+INFO  22:50:32,090 - #47 int
+INFO  22:50:32,093 - #47 x
+INFO  22:50:32,094 - #2 ;
+INFO  22:50:32,095 - #15 const
+INFO  22:50:32,096 - #47 int
+INFO  22:50:32,096 - #47 a
+INFO  22:50:32,096 - #35 =
+INFO  22:50:32,096 - #44 5
+INFO  22:50:32,096 - #2 ;
+INFO  22:50:32,097 - #10 {
+INFO  22:50:32,097 - #47 int
+INFO  22:50:32,098 - #47 fun
+INFO  22:50:32,099 - #6 (
+INFO  22:50:32,099 - #47 int
+INFO  22:50:32,099 - #47 c
+INFO  22:50:32,099 - #7 )
+INFO  22:50:32,100 - #10 {
+INFO  22:50:32,101 - #47 c
+INFO  22:50:32,102 - #35 =
+INFO  22:50:32,103 - #44 2
+INFO  22:50:32,104 - #2 ;
+INFO  22:50:32,106 - #17 return
+INFO  22:50:32,107 - #47 c
+INFO  22:50:32,107 - #28 +
+INFO  22:50:32,107 - #44 2
+INFO  22:50:32,109 - #2 ;
+INFO  22:50:32,109 - #11 }
+INFO  22:50:32,110 - #18 void
+INFO  22:50:32,111 - #47 main
+INFO  22:50:32,111 - #6 (
+INFO  22:50:32,111 - #7 )
+INFO  22:50:32,112 - #47 int
+INFO  22:50:32,112 - #47 y
+INFO  22:50:32,113 - #2 ;
+INFO  22:50:32,113 - #47 char
+INFO  22:50:32,113 - #47 mat
+INFO  22:50:32,113 - #8 [
+INFO  22:50:32,113 - #9 ]
+INFO  22:50:32,113 - #8 [
+INFO  22:50:32,113 - #9 ]
+INFO  22:50:32,114 - #2 ;
+INFO  22:50:32,114 - #47 int
+INFO  22:50:32,114 - #47 abc
+INFO  22:50:32,114 - #2 ;
+INFO  22:50:32,114 - #10 {
+INFO  22:50:32,114 - #47 fun
+INFO  22:50:32,114 - #6 (
+INFO  22:50:32,114 - #47 y
+INFO  22:50:32,114 - #7 )
+INFO  22:50:32,115 - #2 ;
+INFO  22:50:32,115 - #11 }
+INFO  22:50:32,115 - #11 }
+ERROR 22:50:32,156 - Semanticka greska: Funcija fun nema return iskaz na liniji 6
+INFO  22:50:32,157 - LOCAL PARAMS: [] na liniji 16
+INFO  22:50:32,157 - EXPRESION: PositiveTermList(
+  SingleTerm(
+    Term(
+      SingleFactor(
+        DesignFactor(
+          DesignatorElement(
+           y
+          ) [DesignatorElement]
+        ) [DesignFactor]
+      ) [SingleFactor]
+    ) [Term]
+  ) [SingleTerm]
+) [PositiveTermList] na liniji 16

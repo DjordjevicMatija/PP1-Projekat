@@ -3,15 +3,16 @@ program MJProgram
 	const int a = 5;
 {
 
-	int fun(int abc){
-		
+	int fun(int c){
+		c = 2;
+		return c + 2;
 	}
 
-	void main(int x, bool b, char c, int arr[])
+	void main()
 		int y;
 		char mat[][];
 		int abc;
 	{
-
+		fun(y);
 	}
 }

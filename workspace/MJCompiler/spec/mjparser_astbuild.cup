@@ -77,14 +77,12 @@ nonterminal MatchedStatement MatchedStatement;
 nonterminal Condition Condition;
 nonterminal CondTerm CondTerm;
 nonterminal CondFact CondFact;
-nonterminal Expr Expr;
-nonterminal TermList TermList;
-nonterminal Term Term;
-nonterminal FactorList FactorList;
-nonterminal Factor Factor;
-nonterminal Designator Designator;
-nonterminal IdentOrExprList IdentOrExprList;
-nonterminal IdentOrExpr IdentOrExpr;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Expr;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct TermList;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Term;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct FactorList;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Factor;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Designator;
 nonterminal Label Label;
 nonterminal Assignop Assignop;
 nonterminal Relop Relop;
@@ -92,11 +90,7 @@ nonterminal Addop Addop;
 nonterminal Mulop Mulop;
 nonterminal DesignatorStmtList DesignatorStmtList;
 nonterminal DesignatorStatementElem DesignatorStatementElem;
-nonterminal DesignatorStatement DesignatorStatement;
-nonterminal DesignatorList DesignatorList;
-nonterminal DesignatorElems DesignatorElems;
-nonterminal DesignatorElemList DesignatorElemList;
-nonterminal OptDesignator OptDesignator;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct DesignatorStatement;
 nonterminal OptCondFact OptCondFact;
 nonterminal OptActPars OptActPars;
 nonterminal ActPars ActPars;
@@ -239,15 +233,14 @@ DesignatorStatementElem ::=
     | (MultipleDesignatorStmt) DesignatorStatementElem:D1 COMMA DesignatorStatement:D2 {: RESULT=new MultipleDesignatorStmt(D1, D2); RESULT.setLine(D1left); :}
     ;
 
-
 DesignatorStatement ::=
-    (DesignAssign) Designator:D1 Assignop:A2 Expr:E3 {: RESULT=new DesignAssign(D1, A2, E3); RESULT.setLine(D1left); :}
-    | (DesingActPars) Designator:D1 LPARENT OptActPars:O2 RPARENT {: RESULT=new DesingActPars(D1, O2); RESULT.setLine(D1left); :}
-    | (DesignInc) Designator:D1 INC {: RESULT=new DesignInc(D1); RESULT.setLine(D1left); :}
-    | (DesignDec) Designator:D1 DEC {: RESULT=new DesignDec(D1); RESULT.setLine(D1left); :}
+    (DesignAssign) Designator:design Assignop:A1 Expr:E2 {: RESULT=new DesignAssign(design, A1, E2); RESULT.setLine(designleft); :}
+    | (DesingFunc) Designator:func LPARENT OptActPars:O1 RPARENT {: RESULT=new DesingFunc(func, O1); RESULT.setLine(funcleft); :}
+    | (DesignInc) Designator:design INC {: RESULT=new DesignInc(design); RESULT.setLine(designleft); :}
+    | (DesignDec) Designator:design DEC {: RESULT=new DesignDec(design); RESULT.setLine(designleft); :}
 ;
 
-OptCondFact ::=
+OptCondFact ::= 
     (ConditionFactor) CondFact:C1 {: RESULT=new ConditionFactor(C1); RESULT.setLine(C1left); :}
     | (NoConditionFactor) {: RESULT=new NoConditionFactor(); :} /* epsilon */
 ;
@@ -258,7 +251,7 @@ OptActPars ::=
 ;
 
 ActPars ::=
-    (SingleActParam) Expr:E1 {: RESULT=new SingleActParam(E1); RESULT.setLine(E1left); :}
+    (SingleActParam) Expr:e {: RESULT=new SingleActParam(e); RESULT.setLine(eleft); :}
     | (ActParamList) ActPars:A1 COMMA Expr:E2 {: RESULT=new ActParamList(A1, E2); RESULT.setLine(A1left); :}
 ;
 
@@ -297,8 +290,8 @@ FactorList ::=
 ;
 
 Factor ::=
-    (DesignFactor) Designator:D1 {: RESULT=new DesignFactor(D1); RESULT.setLine(D1left); :}
-    | (DesingActParsFactor) Designator:D1 LPARENT OptActPars:O2 RPARENT {: RESULT=new DesingActParsFactor(D1, O2); RESULT.setLine(D1left); :}
+    (DesignFactor) Designator:design {: RESULT=new DesignFactor(design); RESULT.setLine(designleft); :}
+    | (DesingFuncFactor) Designator:func LPARENT OptActPars:O1 RPARENT {: RESULT=new DesingFuncFactor(func, O1); RESULT.setLine(funcleft); :}
     | (FactorNumber) NUMBER:N1 {: RESULT=new FactorNumber(N1); RESULT.setLine(N1left); :}
     | (FactorChar) CHAR:C1 {: RESULT=new FactorChar(C1); RESULT.setLine(C1left); :}
     | (FactorBool) BOOL:B1 {: RESULT=new FactorBool(B1); RESULT.setLine(B1left); :}
@@ -308,18 +301,10 @@ Factor ::=
     | (FactorExpr) LPARENT Expr:E1 RPARENT {: RESULT=new FactorExpr(E1); RESULT.setLine(E1left); :}
 ;
 
-Designator ::= (Designator)
-    IDENT:I1 IdentOrExprList:I2 {: RESULT=new Designator(I1, I2); RESULT.setLine(I1left); :}
-;
-
-IdentOrExprList ::=
-    (IdentsOrExpresions) IdentOrExprList:I1 IdentOrExpr:I2 {: RESULT=new IdentsOrExpresions(I1, I2); RESULT.setLine(I1left); :}
-    | (NoIdentOrExpr) {: RESULT=new NoIdentOrExpr(); :} /* epsilon */
-;
-
-IdentOrExpr ::=
-    (SingleIdent) DOT IDENT:I1 {: RESULT=new SingleIdent(I1); RESULT.setLine(I1left); :}
-    | (SingleExpr) LBRACKET Expr:E1 RBRACKET {: RESULT=new SingleExpr(E1); RESULT.setLine(E1left); :}
+Designator ::=
+    (DesignatorElement) IDENT:designName {: RESULT=new DesignatorElement(designName); RESULT.setLine(designNameleft); :}
+    | (DesignatorArray) IDENT:designName LBRACKET Expr:E1 RBRACKET {: RESULT=new DesignatorArray(designName, E1); RESULT.setLine(designNameleft); :}
+    | (DesignatorMatrix) IDENT:designName LBRACKET Expr:E1 RBRACKET LBRACKET Expr:E2 RBRACKET {: RESULT=new DesignatorMatrix(designName, E1, E2); RESULT.setLine(designNameleft); :}
 ;
 
 Label ::= (Label)

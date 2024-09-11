@@ -1,5 +1,7 @@
 package rs.ac.bg.etf.pp1;
 
+import java.util.ArrayList;
+
 import org.apache.log4j.*;
 
 import rs.ac.bg.etf.pp1.ast.*;
@@ -15,6 +17,8 @@ public class SemanticPass extends VisitorAdaptor {
     boolean returnFound = false;
     boolean invalidMethodName = false;
     boolean mainExists = false;
+    Obj currentMethod = null;
+    ArrayList<Struct> localParams = new ArrayList<>();
 
     Logger log = Logger.getLogger(getClass());
 
@@ -153,6 +157,7 @@ public class SemanticPass extends VisitorAdaptor {
         Obj obj = Tab.currentScope.findSymbol(methodName.getMethodName());
         if(obj == null){
             methodName.obj = Tab.insert(Obj.Meth, methodName.getMethodName(), methodName.getType().struct);
+            currentMethod = methodName.obj;
             invalidMethodName = false;
         }
         else{
@@ -166,6 +171,7 @@ public class SemanticPass extends VisitorAdaptor {
         Obj obj = Tab.currentScope.findSymbol(methodName.getMethodName());
         if(obj == null){
             methodName.obj = Tab.insert(Obj.Meth, methodName.getMethodName(), Tab.noType);
+            currentMethod = methodName.obj;
             invalidMethodName = false;
         }
         else{
@@ -176,29 +182,27 @@ public class SemanticPass extends VisitorAdaptor {
     }
 
     public void visit(Method method){ 
-        if(invalidMethodName){
-            Tab.closeScope();
-            returnFound = false;
-            return;
+        if(!invalidMethodName){
+            if(checkMain(method)){
+                mainExists = true;
+            }
+    
+            if (!returnFound && method.getMethodName().obj.getType() != Tab.noType) {
+                report_error("Funcija " + method.getMethodName().obj.getName() + " nema return iskaz", method);
+            }
         }
-
-        if(checkMain(method)){
-            mainExists = true;
-        }
-
-        if (!returnFound && method.getMethodName().obj.getType() != Tab.noType) {
-            report_error("Funcija " + method.getMethodName().obj.getName() + " nema return iskaz", method);
-		}
 
         Tab.chainLocalSymbols(method.getMethodName().obj);
         Tab.closeScope();
         returnFound = false;
+        currentMethod = null;
     }
 
     public void visit(FormParamElement formParam){
         Obj obj = Tab.currentScope.findSymbol(formParam.getParamName());
         if(obj == null){
             formParam.obj = Tab.insert(Obj.Var, formParam.getParamName(), formParam.getType().struct);
+            currentMethod.setFpPos(currentMethod.getFpPos() + 1);
         }
         else{
             report_error("Simbol " + formParam.getParamName() + " je vec deklarisan", formParam);
@@ -209,18 +213,74 @@ public class SemanticPass extends VisitorAdaptor {
         Obj obj = Tab.currentScope.findSymbol(formParam.getParamName());
         if(obj == null){
             formParam.obj = Tab.insert(Obj.Var, formParam.getParamName(), new Struct(Struct.Array, formParam.getType().struct));
+            currentMethod.setFpPos(currentMethod.getFpPos() + 1);
         }
         else{
             report_error("Simbol " + formParam.getParamName() + " je vec deklarisan", formParam);
         }
     }
 
+    public void visit(DesignatorElement designatorElement){
+        Obj obj = Tab.find(designatorElement.getDesignName());
+        if(obj == Tab.noObj){
+            report_error("Simbol " + designatorElement.getDesignName() + " nije deklarisan", designatorElement);
+        }
+        designatorElement.obj = obj;
+    }
+
+    public void visit(DesignatorArray designatorArray){
+        Obj obj = Tab.find(designatorArray.getDesignName());
+        if(obj == Tab.noObj){
+            report_error("Simbol " + designatorArray.getDesignName() + " nije deklarisan", designatorArray);
+        }
+        if(obj.getType().getKind() != Struct.Array){
+            report_error("Simbol " + designatorArray.getDesignName() + " nije deklarisan kao niz", designatorArray);
+        }
+        designatorArray.obj = obj;
+    }
+
+    public void visit(DesignatorMatrix designatorMatrix){
+        Obj obj = Tab.find(designatorMatrix.getDesignName());
+        if(obj == Tab.noObj){
+            report_error("Simbol " + designatorMatrix.getDesignName() + " nije deklarisan", designatorMatrix);
+        }
+        if(obj.getType().getKind() != Struct.Array || obj.getType().getElemType().getKind() != Struct.Array){
+            report_error("Simbol " + designatorMatrix.getDesignName() + " nije deklarisan kao matrica", designatorMatrix);
+        }
+        designatorMatrix.obj = obj;
+    }
+
+    public void visit(SingleActParam param){
+        localParams.add(param.getExpr().obj.getType());
+    }
+
     public void visit(DesignAssign designAssign){
 
     }
 
-    public void visit(DesingActPars desingActPars){
-        
+    public void visit(DesingFunc desingFunc){
+        Obj func = desingFunc.getDesignator().obj;
+        if(func.getKind() == Obj.Meth){
+            desingFunc.struct = func.getType();
+
+            if(localParams.size() != func.getFpPos()){
+                report_error("Neodgovarajuci broj parametara za metodu " + func.getName(), desingFunc);
+            }
+            else{
+                ArrayList<Obj> localSymbols = new ArrayList<>(func.getLocalSymbols());
+
+                for(int i = 0; i < localParams.size(); i++){
+                    if(localParams.get(i) != localSymbols.get(i).getType()){
+                        report_error("Neodgovarajuci tip parametara za metodu " + func.getName(), desingFunc);
+                        break;
+                    }
+                }
+            }
+        }
+        else{
+            report_error("Simbol " + func.getName() + " nije deklarisan kao metoda", desingFunc);
+            desingFunc.struct = Tab.noType;
+        }
     }
 
     public void visit(DesignInc designInc){
@@ -229,6 +289,31 @@ public class SemanticPass extends VisitorAdaptor {
 
     public void visit(DesignDec designDec){
         
+    }
+
+    public void visit(DesingFuncFactor desingFunc){
+        Obj func = desingFunc.getDesignator().obj;
+        if(func.getKind() == Obj.Meth){
+            desingFunc.struct = func.getType();
+
+            if(localParams.size() != func.getFpPos()){
+                report_error("Neodgovarajuci broj parametara za metodu " + func.getName(), desingFunc);
+            }
+            else{
+                ArrayList<Obj> localSymbols = new ArrayList<>(func.getLocalSymbols());
+
+                for(int i = 0; i < localParams.size(); i++){
+                    if(localParams.get(i) != localSymbols.get(i).getType()){
+                        report_error("Neodgovarajuci tip parametara za metodu " + func.getName(), desingFunc);
+                        break;
+                    }
+                }
+            }
+        }
+        else{
+            report_error("Simbol " + func.getName() + " nije deklarisan kao metoda", desingFunc);
+            desingFunc.struct = Tab.noType;
+        }
     }
 }
  

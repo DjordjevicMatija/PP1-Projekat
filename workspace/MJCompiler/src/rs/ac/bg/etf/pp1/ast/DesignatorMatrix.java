@@ -5,13 +5,26 @@
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class ReturnExpr extends MatchedStatement {
+public class DesignatorMatrix extends Designator {
 
+    private String designName;
     private Expr Expr;
+    private Expr Expr1;
 
-    public ReturnExpr (Expr Expr) {
+    public DesignatorMatrix (String designName, Expr Expr, Expr Expr1) {
+        this.designName=designName;
         this.Expr=Expr;
         if(Expr!=null) Expr.setParent(this);
+        this.Expr1=Expr1;
+        if(Expr1!=null) Expr1.setParent(this);
+    }
+
+    public String getDesignName() {
+        return designName;
+    }
+
+    public void setDesignName(String designName) {
+        this.designName=designName;
     }
 
     public Expr getExpr() {
@@ -22,28 +35,42 @@ public class ReturnExpr extends MatchedStatement {
         this.Expr=Expr;
     }
 
+    public Expr getExpr1() {
+        return Expr1;
+    }
+
+    public void setExpr1(Expr Expr1) {
+        this.Expr1=Expr1;
+    }
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
 
     public void childrenAccept(Visitor visitor) {
         if(Expr!=null) Expr.accept(visitor);
+        if(Expr1!=null) Expr1.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
         if(Expr!=null) Expr.traverseTopDown(visitor);
+        if(Expr1!=null) Expr1.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
         if(Expr!=null) Expr.traverseBottomUp(visitor);
+        if(Expr1!=null) Expr1.traverseBottomUp(visitor);
         accept(visitor);
     }
 
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("ReturnExpr(\n");
+        buffer.append("DesignatorMatrix(\n");
+
+        buffer.append(" "+tab+designName);
+        buffer.append("\n");
 
         if(Expr!=null)
             buffer.append(Expr.toString("  "+tab));
@@ -51,8 +78,14 @@ public class ReturnExpr extends MatchedStatement {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
+        if(Expr1!=null)
+            buffer.append(Expr1.toString("  "+tab));
+        else
+            buffer.append(tab+"  null");
+        buffer.append("\n");
+
         buffer.append(tab);
-        buffer.append(") [ReturnExpr]");
+        buffer.append(") [DesignatorMatrix]");
         return buffer.toString();
     }
 }

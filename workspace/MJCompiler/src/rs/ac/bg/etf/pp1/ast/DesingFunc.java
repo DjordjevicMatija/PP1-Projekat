@@ -1,16 +1,16 @@
 // generated with ast extension for cup
 // version 0.8
-// 11/8/2024 10:55:16
+// 11/8/2024 22:16:26
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class DesingActPars extends DesignatorStatement {
+public class DesingFunc extends DesignatorStatement {
 
     private Designator Designator;
     private OptActPars OptActPars;
 
-    public DesingActPars (Designator Designator, OptActPars OptActPars) {
+    public DesingFunc (Designator Designator, OptActPars OptActPars) {
         this.Designator=Designator;
         if(Designator!=null) Designator.setParent(this);
         this.OptActPars=OptActPars;
@@ -57,7 +57,7 @@ public class DesingActPars extends DesignatorStatement {
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("DesingActPars(\n");
+        buffer.append("DesingFunc(\n");
 
         if(Designator!=null)
             buffer.append(Designator.toString("  "+tab));
@@ -72,7 +72,7 @@ public class DesingActPars extends DesignatorStatement {
         buffer.append("\n");
 
         buffer.append(tab);
-        buffer.append(") [DesingActPars]");
+        buffer.append(") [DesingFunc]");
         return buffer.toString();
     }
 }

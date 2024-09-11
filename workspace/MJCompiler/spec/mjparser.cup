@@ -77,14 +77,12 @@ nonterminal MatchedStatement;
 nonterminal Condition;
 nonterminal CondTerm;
 nonterminal CondFact;
-nonterminal Expr;
-nonterminal TermList;
-nonterminal Term;
-nonterminal FactorList;
-nonterminal Factor;
-nonterminal Designator;
-nonterminal IdentOrExprList;
-nonterminal IdentOrExpr;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Expr;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct TermList;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Term;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct FactorList;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Factor;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj Designator;
 nonterminal Label;
 nonterminal Assignop;
 nonterminal Relop;
@@ -92,11 +90,7 @@ nonterminal Addop;
 nonterminal Mulop;
 nonterminal DesignatorStmtList;
 nonterminal DesignatorStatementElem;
-nonterminal DesignatorStatement;
-nonterminal DesignatorList;
-nonterminal DesignatorElems;
-nonterminal DesignatorElemList;
-nonterminal OptDesignator;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct DesignatorStatement;
 nonterminal OptCondFact;
 nonterminal OptActPars;
 nonterminal ActPars;
@@ -239,15 +233,14 @@ DesignatorStatementElem ::=
     | (MultipleDesignatorStmt) DesignatorStatementElem COMMA DesignatorStatement
     ;
 
-
 DesignatorStatement ::=
-    (DesignAssign) Designator Assignop Expr
-    | (DesingActPars) Designator LPARENT OptActPars RPARENT
-    | (DesignInc) Designator INC
-    | (DesignDec) Designator DEC
+    (DesignAssign) Designator:design Assignop Expr
+    | (DesingFunc) Designator:func LPARENT OptActPars RPARENT
+    | (DesignInc) Designator:design INC
+    | (DesignDec) Designator:design DEC
 ;
 
-OptCondFact ::=
+OptCondFact ::= 
     (ConditionFactor) CondFact
     | (NoConditionFactor) /* epsilon */
 ;
@@ -258,7 +251,7 @@ OptActPars ::=
 ;
 
 ActPars ::=
-    (SingleActParam) Expr
+    (SingleActParam) Expr:e
     | (ActParamList) ActPars COMMA Expr
 ;
 
@@ -297,8 +290,8 @@ FactorList ::=
 ;
 
 Factor ::=
-    (DesignFactor) Designator
-    | (DesingActParsFactor) Designator LPARENT OptActPars RPARENT
+    (DesignFactor) Designator:design
+    | (DesingFuncFactor) Designator:func LPARENT OptActPars RPARENT
     | (FactorNumber) NUMBER
     | (FactorChar) CHAR
     | (FactorBool) BOOL
@@ -308,18 +301,10 @@ Factor ::=
     | (FactorExpr) LPARENT Expr RPARENT
 ;
 
-Designator ::= (Designator)
-    IDENT IdentOrExprList
-;
-
-IdentOrExprList ::=
-    (IdentsOrExpresions) IdentOrExprList IdentOrExpr
-    | (NoIdentOrExpr) /* epsilon */
-;
-
-IdentOrExpr ::=
-    (SingleIdent) DOT IDENT
-    | (SingleExpr) LBRACKET Expr RBRACKET
+Designator ::=
+    (DesignatorElement) IDENT:designName
+    | (DesignatorArray) IDENT:designName LBRACKET Expr RBRACKET
+    | (DesignatorMatrix) IDENT:designName LBRACKET Expr RBRACKET LBRACKET Expr RBRACKET
 ;
 
 Label ::= (Label)

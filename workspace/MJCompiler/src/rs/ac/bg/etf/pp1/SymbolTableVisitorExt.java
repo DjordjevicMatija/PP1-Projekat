@@ -22,23 +22,22 @@ public class SymbolTableVisitorExt extends DumpSymbolTableVisitor {
             output.append("bool");
             break;
 		case Struct.Array:
-			output.append("Arr of ");
 			
 			switch (structToVisit.getElemType().getKind()) {
 			case Struct.None:
-				output.append("notype");
+				output.append("Arr of notype");
 				break;
 			case Struct.Int:
-				output.append("int");
+				output.append("Arr of int");
 				break;
 			case Struct.Char:
-				output.append("char");
+				output.append("Arr of char");
 				break;
             case Struct.Bool:
-                output.append("bool");
+                output.append("Arr of bool");
             break;
             case Struct.Array:
-			    output.append("Arr of ");
+			    output.append("Matrix of ");
 
                 switch (structToVisit.getElemType().getElemType().getKind()) {
                 case Struct.None:

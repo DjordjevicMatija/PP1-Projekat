@@ -1,24 +1,24 @@
 // generated with ast extension for cup
 // version 0.8
-// 11/8/2024 10:55:16
+// 11/8/2024 22:16:26
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class SingleIdent extends IdentOrExpr {
+public class DesignatorElement extends Designator {
 
-    private String I1;
+    private String designName;
 
-    public SingleIdent (String I1) {
-        this.I1=I1;
+    public DesignatorElement (String designName) {
+        this.designName=designName;
     }
 
-    public String getI1() {
-        return I1;
+    public String getDesignName() {
+        return designName;
     }
 
-    public void setI1(String I1) {
-        this.I1=I1;
+    public void setDesignName(String designName) {
+        this.designName=designName;
     }
 
     public void accept(Visitor visitor) {
@@ -39,13 +39,13 @@ public class SingleIdent extends IdentOrExpr {
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("SingleIdent(\n");
+        buffer.append("DesignatorElement(\n");
 
-        buffer.append(" "+tab+I1);
+        buffer.append(" "+tab+designName);
         buffer.append("\n");
 
         buffer.append(tab);
-        buffer.append(") [SingleIdent]");
+        buffer.append(") [DesignatorElement]");
         return buffer.toString();
     }
 }
