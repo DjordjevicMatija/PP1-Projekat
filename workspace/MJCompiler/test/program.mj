@@ -1,19 +1,17 @@
 program MJProgram
-	int x+;
-	const char w = 'a'5, v = 'b';
-	const 2 int t = 5a;
-	int arr[];
-	int mat[][];
+	int x;
+	const int a = 5;
 {
-	void main(){
-		print(1);
-		print(1);
-		arr = new int[5];
-		mat = new int[2][3+(2-1)];
-		x = 1;
-		y = 2;
-		for(;;){}
-		if(x == y){}
-		else{}
+
+	int fun(int abc){
+		
+	}
+
+	void main(int x, bool b, char c, int arr[])
+		int y;
+		char mat[][];
+		int abc;
+	{
+
 	}
 }

@@ -9,10 +9,10 @@
 				<exclude name="Yylex.java"/>
 				<exclude name="RuleVisitor.java"/>
 				<exclude name="SemanticPass.java"/>
-				<exclude name="MyTab.java"/>
+				<exclude name="SymbolTable.java"/>
 				<exclude name="CodeGenerator.java"/>
 				<exclude name="CounterVisitor.java"/>
-				<exclude name="MyDumpSymbolTableVisitor.java"/>
+				<exclude name="SymbolTableVisitorExt.java"/>
 				<exclude name="Compiler.java"/>
 			</fileset>
 		</delete>

@@ -13,14 +13,15 @@ import java_cup.runtime.Symbol;
 import rs.ac.bg.etf.pp1.ast.Program;
 import rs.ac.bg.etf.pp1.util.Log4JUtils;
 
-public class MJParserTest {
+public class Compiler {
 
 	static {
 		DOMConfigurator.configure(Log4JUtils.instance().findLoggerConfigFile());
 		Log4JUtils.instance().prepareLogFile(Logger.getRootLogger());
 	}
-	
-	public static void main(String[] args) throws Exception {
+
+    public static void main(String[] args) throws Exception {
+            
 		Logger log = Logger.getLogger(MJParserTest.class);
 
 		Reader br = null;
@@ -37,14 +38,13 @@ public class MJParserTest {
 			Symbol s = p.parse();
 			Program prog = (Program)(s.value);
 
-			// log.info(prog.toString());
-			// log.info("====================================");
+            SymbolTable.init();
  
-			RuleVisitor v = new RuleVisitor();
-			prog.traverseBottomUp(v);
+			SemanticPass semanticPass = new SemanticPass();
+			System.out.println("=====================SEMANTIC PASS=========================");
+			prog.traverseBottomUp(semanticPass);
 
-
-			log.info("Print count calls = " + v.printCallCount);
+            SymbolTable.dump();
 		} 
 		finally {
 			if (br != null) try { br.close(); } catch (IOException e1) { log.error(e1.getMessage(), e1); }

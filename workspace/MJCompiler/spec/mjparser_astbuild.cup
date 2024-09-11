@@ -239,6 +239,7 @@ DesignatorStatementElem ::=
     | (MultipleDesignatorStmt) DesignatorStatementElem:D1 COMMA DesignatorStatement:D2 {: RESULT=new MultipleDesignatorStmt(D1, D2); RESULT.setLine(D1left); :}
     ;
 
+
 DesignatorStatement ::=
     (DesignAssign) Designator:D1 Assignop:A2 Expr:E3 {: RESULT=new DesignAssign(D1, A2, E3); RESULT.setLine(D1left); :}
     | (DesingActPars) Designator:D1 LPARENT OptActPars:O2 RPARENT {: RESULT=new DesingActPars(D1, O2); RESULT.setLine(D1left); :}

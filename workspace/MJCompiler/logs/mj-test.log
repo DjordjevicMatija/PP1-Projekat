@@ -1,3 +1,56 @@
-INFO  19:52:42,750 - Prepoznata naredba print!
-INFO  19:52:42,750 - Prepoznata naredba print!
-INFO  19:52:42,751 - Print count calls = 2
+INFO  17:25:52,546 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
+INFO  17:25:52,669 - #13 program
+INFO  17:25:52,669 - #47 MJProgram
+INFO  17:25:52,669 - #47 int
+INFO  17:25:52,672 - #47 x
+INFO  17:25:52,673 - #2 ;
+INFO  17:25:52,673 - #15 const
+INFO  17:25:52,674 - #47 int
+INFO  17:25:52,674 - #47 a
+INFO  17:25:52,674 - #35 =
+INFO  17:25:52,675 - #44 5
+INFO  17:25:52,675 - #2 ;
+INFO  17:25:52,675 - #10 {
+INFO  17:25:52,676 - #47 int
+INFO  17:25:52,677 - #47 fun
+INFO  17:25:52,677 - #6 (
+INFO  17:25:52,678 - #47 int
+INFO  17:25:52,678 - #47 abc
+INFO  17:25:52,678 - #7 )
+INFO  17:25:52,679 - #10 {
+INFO  17:25:52,680 - #11 }
+INFO  17:25:52,681 - #18 void
+INFO  17:25:52,682 - #47 main
+INFO  17:25:52,682 - #6 (
+INFO  17:25:52,683 - #47 int
+INFO  17:25:52,683 - #47 x
+INFO  17:25:52,683 - #4 ,
+INFO  17:25:52,683 - #47 bool
+INFO  17:25:52,683 - #47 b
+INFO  17:25:52,683 - #4 ,
+INFO  17:25:52,684 - #47 char
+INFO  17:25:52,684 - #47 c
+INFO  17:25:52,684 - #4 ,
+INFO  17:25:52,684 - #47 int
+INFO  17:25:52,684 - #47 arr
+INFO  17:25:52,684 - #8 [
+INFO  17:25:52,684 - #9 ]
+INFO  17:25:52,685 - #7 )
+INFO  17:25:52,685 - #47 int
+INFO  17:25:52,685 - #47 y
+INFO  17:25:52,685 - #2 ;
+INFO  17:25:52,685 - #47 char
+INFO  17:25:52,686 - #47 mat
+INFO  17:25:52,686 - #8 [
+INFO  17:25:52,686 - #9 ]
+INFO  17:25:52,686 - #8 [
+INFO  17:25:52,686 - #9 ]
+INFO  17:25:52,687 - #2 ;
+INFO  17:25:52,687 - #47 int
+INFO  17:25:52,687 - #47 abc
+INFO  17:25:52,687 - #2 ;
+INFO  17:25:52,688 - #10 {
+INFO  17:25:52,688 - #11 }
+INFO  17:25:52,688 - #11 }
+ERROR 17:25:52,726 - Semanticka greska: Funcija fun nema return iskaz! na liniji 6
+ERROR 17:25:52,727 - Semanticka greska: Ne postoji metoda void main() na liniji 1
