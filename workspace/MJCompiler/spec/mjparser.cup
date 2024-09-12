@@ -90,7 +90,7 @@ nonterminal Addop;
 nonterminal Mulop;
 nonterminal DesignatorStmtList;
 nonterminal DesignatorStatementElem;
-nonterminal rs.etf.pp1.symboltable.concepts.Struct DesignatorStatement;
+nonterminal DesignatorStatement;
 nonterminal OptCondFact;
 nonterminal OptActPars;
 nonterminal ActPars;

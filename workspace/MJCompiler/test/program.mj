@@ -1,6 +1,9 @@
 program MJProgram
 	int x;
 	const int a = 5;
+	bool flag;
+	char arr[];
+	char c;
 {
 
 	int fun(int c){
@@ -12,7 +15,11 @@ program MJProgram
 		int y;
 		char mat[][];
 		int abc;
+		char mat1[][];
 	{
-		fun(y);
+		mat1 = new char[2][2 + (3 - 1)];
+		mat1[2][3] = 'c';
+		x = 5;
+		y = fun(x);
 	}
 }

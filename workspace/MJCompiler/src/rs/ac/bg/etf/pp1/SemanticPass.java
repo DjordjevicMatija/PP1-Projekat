@@ -13,14 +13,18 @@ public class SemanticPass extends VisitorAdaptor {
     public static final Struct boolType = new Struct(Struct.Bool);
 
     boolean errorDetected = false;
+
     Struct currentType = null;
+    Obj currentMethod = null;
+
     boolean returnFound = false;
     boolean invalidMethodName = false;
     boolean mainExists = false;
-    Obj currentMethod = null;
     ArrayList<Struct> localParams = new ArrayList<>();
 
     Logger log = Logger.getLogger(getClass());
+
+    // LOGS
 
     public void report_error(String message, SyntaxNode info) {
 		errorDetected = true;
@@ -39,6 +43,8 @@ public class SemanticPass extends VisitorAdaptor {
 			msg.append (" na liniji ").append(line);
 		log.info(msg.toString());
 	}
+
+    // PROGRAM
 
     private boolean checkMain(Method method){
         return (
@@ -60,6 +66,8 @@ public class SemanticPass extends VisitorAdaptor {
             report_error("Ne postoji metoda void main()", program);
         }
     }
+
+    // CONST
 
     public void visit(ConstNumber constant){
         if(currentType == Tab.intType){
@@ -103,6 +111,8 @@ public class SemanticPass extends VisitorAdaptor {
         }
     }
 
+    // TYPE
+
     public void visit(Type type){
         Obj typeNode = Tab.find(type.getTypeName());
 		if (typeNode == Tab.noObj) {
@@ -122,6 +132,8 @@ public class SemanticPass extends VisitorAdaptor {
 			}
 		}  
     }
+
+    // VAR
 
     public void visit(VarElement var){
         Obj obj = Tab.currentScope.findSymbol(var.getVarName());
@@ -152,6 +164,8 @@ public class SemanticPass extends VisitorAdaptor {
             report_error("Simbol " + var.getVarName() + " je vec deklarisan", var);
         }
     }
+
+    // METHOD
 
     public void visit(MethodTypeName methodName){
         Obj obj = Tab.currentScope.findSymbol(methodName.getMethodName());
@@ -198,6 +212,8 @@ public class SemanticPass extends VisitorAdaptor {
         currentMethod = null;
     }
 
+    // FORM PARS
+
     public void visit(FormParamElement formParam){
         Obj obj = Tab.currentScope.findSymbol(formParam.getParamName());
         if(obj == null){
@@ -220,6 +236,8 @@ public class SemanticPass extends VisitorAdaptor {
         }
     }
 
+    // DESIGNATOR
+
     public void visit(DesignatorElement designatorElement){
         Obj obj = Tab.find(designatorElement.getDesignName());
         if(obj == Tab.noObj){
@@ -230,38 +248,63 @@ public class SemanticPass extends VisitorAdaptor {
 
     public void visit(DesignatorArray designatorArray){
         Obj obj = Tab.find(designatorArray.getDesignName());
+        Struct returnType;
         if(obj == Tab.noObj){
             report_error("Simbol " + designatorArray.getDesignName() + " nije deklarisan", designatorArray);
         }
+
         if(obj.getType().getKind() != Struct.Array){
             report_error("Simbol " + designatorArray.getDesignName() + " nije deklarisan kao niz", designatorArray);
+            returnType = Tab.noType;
         }
-        designatorArray.obj = obj;
+        else{
+            returnType = obj.getType().getElemType();
+        }
+
+        if(designatorArray.getExpr().obj.getType() != Tab.intType){
+            report_error("Na referencirani element niza mora ukazivati int", designatorArray);
+        }
+        designatorArray.obj = new Obj(obj.getKind(), obj.getName(), returnType);
     }
 
-    public void visit(DesignatorMatrix designatorMatrix){
+    public void visit(DesignatorMatrix designatorMatrix){        
         Obj obj = Tab.find(designatorMatrix.getDesignName());
+        Struct returnType;
         if(obj == Tab.noObj){
             report_error("Simbol " + designatorMatrix.getDesignName() + " nije deklarisan", designatorMatrix);
         }
+
         if(obj.getType().getKind() != Struct.Array || obj.getType().getElemType().getKind() != Struct.Array){
             report_error("Simbol " + designatorMatrix.getDesignName() + " nije deklarisan kao matrica", designatorMatrix);
+            returnType = Tab.noType;
         }
-        designatorMatrix.obj = obj;
+        else{
+            returnType = obj.getType().getElemType().getElemType();
+        }
+
+        if(designatorMatrix.getExpr().obj.getType() != Tab.intType || designatorMatrix.getExpr1().obj.getType() != Tab.intType){
+            report_error("Na referencirani element matrice mora ukazivati int", designatorMatrix);
+        }
+        designatorMatrix.obj = new Obj(obj.getKind(), obj.getName(), returnType);
     }
+
+    // ACT PARS
 
     public void visit(SingleActParam param){
         localParams.add(param.getExpr().obj.getType());
     }
 
-    public void visit(DesignAssign designAssign){
+    // DESIGNATOR STMT
 
+    public void visit(DesignAssign designAssign){
+        if(!designAssign.getExpr().obj.getType().assignableTo(designAssign.getDesignator().obj.getType())){
+            report_error("Nekompatabilni tipovi pri dodeli vrednosti", designAssign);
+        }
     }
 
     public void visit(DesingFunc desingFunc){
         Obj func = desingFunc.getDesignator().obj;
         if(func.getKind() == Obj.Meth){
-            desingFunc.struct = func.getType();
 
             if(localParams.size() != func.getFpPos()){
                 report_error("Neodgovarajuci broj parametara za metodu " + func.getName(), desingFunc);
@@ -279,16 +322,35 @@ public class SemanticPass extends VisitorAdaptor {
         }
         else{
             report_error("Simbol " + func.getName() + " nije deklarisan kao metoda", desingFunc);
-            desingFunc.struct = Tab.noType;
         }
     }
 
     public void visit(DesignInc designInc){
-        
+        Struct type = designInc.getDesignator().obj.getType();
+        if(
+            type != Tab.intType
+            || (type.getKind() == Struct.Array && type.getElemType() != Tab.intType)
+            || (type.getKind() == Struct.Array && type.getElemType().getKind() == Struct.Array && type.getElemType().getElemType() != Tab.intType)
+        ){
+            report_error("Promenljiva, element niza ili element matrice mora biti tipa int za operaciju inc", designInc);
+        }
     }
 
     public void visit(DesignDec designDec){
-        
+        Struct type = designDec.getDesignator().obj.getType();
+        if(
+            type != Tab.intType
+            || (type.getKind() == Struct.Array && type.getElemType() != Tab.intType)
+            || (type.getKind() == Struct.Array && type.getElemType().getKind() == Struct.Array && type.getElemType().getElemType() != Tab.intType)
+        ){
+            report_error("Promenljiva, element niza ili element matrice mora biti tipa int za operaciju dec", designDec);
+        }
+    }
+
+    // FACTOR
+
+    public void visit(DesignFactor factorVar){
+        factorVar.struct = factorVar.getDesignator().obj.getType();
     }
 
     public void visit(DesingFuncFactor desingFunc){
@@ -315,5 +377,99 @@ public class SemanticPass extends VisitorAdaptor {
             desingFunc.struct = Tab.noType;
         }
     }
+
+    public void visit(FactorNumber factorConst){
+        factorConst.struct = Tab.intType;
+    }
+
+    public void visit(FactorChar factorConst){
+        factorConst.struct = Tab.charType;
+    }
+
+    public void visit(FactorBool factorConst){
+        factorConst.struct = boolType;
+    }
+
+    public void visit(NewArrayFactor factorArray){
+        if(factorArray.getExpr().obj.getType() != Tab.intType){
+            report_error("Na referencirani element niza mora ukazivati int", factorArray);
+            factorArray.struct = Tab.nullType;
+        }
+        else{
+            factorArray.struct = new Struct(Struct.Array, currentType);
+        }
+    }
+
+    public void visit(NewMatrixFactor factorMatrix){
+        if(factorMatrix.getExpr().obj.getType() != Tab.intType || factorMatrix.getExpr1().obj.getType() != Tab.intType){
+            report_error("Na referencirani element matrice mora ukazivati int", factorMatrix);
+            factorMatrix.struct = Tab.nullType;
+        }
+        else{
+            factorMatrix.struct = new Struct(Struct.Array, new Struct(Struct.Array, currentType));
+        }
+    }
+
+    public void visit(FactorExpr factorExpr){
+        factorExpr.struct = factorExpr.getExpr().obj.getType();
+    }
+
+    // FACTOR LIST
+
+    public void visit(SingleFactor term){
+        term.struct = term.getFactor().struct;
+    }
+
+    public void visit(Factors factors){
+        if(factors.getFactorList().struct != Tab.intType || factors.getFactor().struct != Tab.intType){
+            report_error("Operandi operacije mnozenja moraju biti tipa int", factors);
+            factors.struct = Tab.noType;
+        }
+        else{
+            factors.struct = Tab.intType;
+        }
+    }
+
+    // TERM
+
+    public void visit(Term term){
+        term.struct = term.getFactorList().struct;
+    }
+
+    // TERM LIST
+
+    public void visit(SingleTerm term){
+        term.struct = term.getTerm().struct;
+    }
+
+    public void visit(TerminalList termList){
+        // Struct tl = termList.getTermList().struct;
+        // Struct t = termList.getTerm().struct;
+        // if(tl.compatibleWith(t) && t == Tab.intType)
+        if(termList.getTermList().struct != Tab.intType || termList.getTerm().struct != Tab.intType){
+            report_error("Operandi operacije sabiranja moraju biti tipa int", termList);
+            termList.struct = Tab.noType;
+        }
+        else{
+            termList.struct = Tab.intType;
+        }
+    }
+
+    // EXPR
+
+    public void visit(PositiveTermList expr){
+        expr.obj = new Obj(Obj.Con, null, expr.getTermList().struct);
+    }
+
+    public void visit(NegativeTermList expr){
+        if(expr.getTermList().struct != Tab.intType){
+            report_error("Izraz mora biti tipa int", expr);
+            expr.obj = new Obj(Obj.Con, null, Tab.noType);
+        }
+        else{
+            expr.obj = new Obj(Obj.Con, null, expr.getTermList().struct);
+        }
+    }
+    
 }
  

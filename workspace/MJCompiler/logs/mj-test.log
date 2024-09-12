@@ -1,70 +1,107 @@
-INFO  22:50:31,955 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
-INFO  22:50:32,090 - #13 program
-INFO  22:50:32,090 - #47 MJProgram
-INFO  22:50:32,090 - #47 int
-INFO  22:50:32,093 - #47 x
-INFO  22:50:32,094 - #2 ;
-INFO  22:50:32,095 - #15 const
-INFO  22:50:32,096 - #47 int
-INFO  22:50:32,096 - #47 a
-INFO  22:50:32,096 - #35 =
-INFO  22:50:32,096 - #44 5
-INFO  22:50:32,096 - #2 ;
-INFO  22:50:32,097 - #10 {
-INFO  22:50:32,097 - #47 int
-INFO  22:50:32,098 - #47 fun
-INFO  22:50:32,099 - #6 (
-INFO  22:50:32,099 - #47 int
-INFO  22:50:32,099 - #47 c
-INFO  22:50:32,099 - #7 )
-INFO  22:50:32,100 - #10 {
-INFO  22:50:32,101 - #47 c
-INFO  22:50:32,102 - #35 =
-INFO  22:50:32,103 - #44 2
-INFO  22:50:32,104 - #2 ;
-INFO  22:50:32,106 - #17 return
-INFO  22:50:32,107 - #47 c
-INFO  22:50:32,107 - #28 +
-INFO  22:50:32,107 - #44 2
-INFO  22:50:32,109 - #2 ;
-INFO  22:50:32,109 - #11 }
-INFO  22:50:32,110 - #18 void
-INFO  22:50:32,111 - #47 main
-INFO  22:50:32,111 - #6 (
-INFO  22:50:32,111 - #7 )
-INFO  22:50:32,112 - #47 int
-INFO  22:50:32,112 - #47 y
-INFO  22:50:32,113 - #2 ;
-INFO  22:50:32,113 - #47 char
-INFO  22:50:32,113 - #47 mat
-INFO  22:50:32,113 - #8 [
-INFO  22:50:32,113 - #9 ]
-INFO  22:50:32,113 - #8 [
-INFO  22:50:32,113 - #9 ]
-INFO  22:50:32,114 - #2 ;
-INFO  22:50:32,114 - #47 int
-INFO  22:50:32,114 - #47 abc
-INFO  22:50:32,114 - #2 ;
-INFO  22:50:32,114 - #10 {
-INFO  22:50:32,114 - #47 fun
-INFO  22:50:32,114 - #6 (
-INFO  22:50:32,114 - #47 y
-INFO  22:50:32,114 - #7 )
-INFO  22:50:32,115 - #2 ;
-INFO  22:50:32,115 - #11 }
-INFO  22:50:32,115 - #11 }
-ERROR 22:50:32,156 - Semanticka greska: Funcija fun nema return iskaz na liniji 6
-INFO  22:50:32,157 - LOCAL PARAMS: [] na liniji 16
-INFO  22:50:32,157 - EXPRESION: PositiveTermList(
-  SingleTerm(
-    Term(
-      SingleFactor(
-        DesignFactor(
-          DesignatorElement(
-           y
-          ) [DesignatorElement]
-        ) [DesignFactor]
-      ) [SingleFactor]
-    ) [Term]
-  ) [SingleTerm]
-) [PositiveTermList] na liniji 16
+INFO  02:27:28,418 - Compiling source file: C:\Users\viole\OneDrive\Documents\GitHub\PP1-Projekat\workspace\MJCompiler\test\program.mj
+INFO  02:27:28,501 - #13 program
+INFO  02:27:28,501 - #47 MJProgram
+INFO  02:27:28,501 - #47 int
+INFO  02:27:28,503 - #47 x
+INFO  02:27:28,504 - #2 ;
+INFO  02:27:28,504 - #15 const
+INFO  02:27:28,505 - #47 int
+INFO  02:27:28,505 - #47 a
+INFO  02:27:28,505 - #35 =
+INFO  02:27:28,505 - #44 5
+INFO  02:27:28,505 - #2 ;
+INFO  02:27:28,506 - #47 bool
+INFO  02:27:28,506 - #47 flag
+INFO  02:27:28,507 - #2 ;
+INFO  02:27:28,507 - #47 char
+INFO  02:27:28,507 - #47 arr
+INFO  02:27:28,507 - #8 [
+INFO  02:27:28,507 - #9 ]
+INFO  02:27:28,507 - #2 ;
+INFO  02:27:28,508 - #47 char
+INFO  02:27:28,508 - #47 c
+INFO  02:27:28,515 - #2 ;
+INFO  02:27:28,515 - #10 {
+INFO  02:27:28,515 - #47 int
+INFO  02:27:28,516 - #47 fun
+INFO  02:27:28,516 - #6 (
+INFO  02:27:28,516 - #47 int
+INFO  02:27:28,516 - #47 c
+INFO  02:27:28,517 - #7 )
+INFO  02:27:28,517 - #10 {
+INFO  02:27:28,518 - #47 c
+INFO  02:27:28,519 - #35 =
+INFO  02:27:28,519 - #44 2
+INFO  02:27:28,520 - #2 ;
+INFO  02:27:28,522 - #17 return
+INFO  02:27:28,523 - #47 c
+INFO  02:27:28,523 - #28 +
+INFO  02:27:28,523 - #44 2
+INFO  02:27:28,525 - #2 ;
+INFO  02:27:28,525 - #11 }
+INFO  02:27:28,525 - #18 void
+INFO  02:27:28,526 - #47 main
+INFO  02:27:28,527 - #6 (
+INFO  02:27:28,527 - #7 )
+INFO  02:27:28,528 - #47 int
+INFO  02:27:28,528 - #47 y
+INFO  02:27:28,528 - #2 ;
+INFO  02:27:28,528 - #47 char
+INFO  02:27:28,529 - #47 mat
+INFO  02:27:28,529 - #8 [
+INFO  02:27:28,529 - #9 ]
+INFO  02:27:28,529 - #8 [
+INFO  02:27:28,529 - #9 ]
+INFO  02:27:28,529 - #2 ;
+INFO  02:27:28,529 - #47 int
+INFO  02:27:28,529 - #47 abc
+INFO  02:27:28,529 - #2 ;
+INFO  02:27:28,530 - #47 char
+INFO  02:27:28,530 - #47 mat1
+INFO  02:27:28,530 - #8 [
+INFO  02:27:28,530 - #9 ]
+INFO  02:27:28,530 - #8 [
+INFO  02:27:28,530 - #9 ]
+INFO  02:27:28,530 - #2 ;
+INFO  02:27:28,530 - #10 {
+INFO  02:27:28,531 - #47 mat1
+INFO  02:27:28,531 - #35 =
+INFO  02:27:28,531 - #16 new
+INFO  02:27:28,531 - #47 char
+INFO  02:27:28,531 - #8 [
+INFO  02:27:28,531 - #44 2
+INFO  02:27:28,531 - #9 ]
+INFO  02:27:28,531 - #8 [
+INFO  02:27:28,532 - #44 2
+INFO  02:27:28,532 - #28 +
+INFO  02:27:28,532 - #6 (
+INFO  02:27:28,532 - #44 3
+INFO  02:27:28,532 - #29 -
+INFO  02:27:28,532 - #44 1
+INFO  02:27:28,533 - #7 )
+INFO  02:27:28,533 - #9 ]
+INFO  02:27:28,533 - #2 ;
+INFO  02:27:28,534 - #47 mat1
+INFO  02:27:28,534 - #8 [
+INFO  02:27:28,534 - #44 2
+INFO  02:27:28,535 - #9 ]
+INFO  02:27:28,535 - #8 [
+INFO  02:27:28,535 - #44 3
+INFO  02:27:28,535 - #9 ]
+INFO  02:27:28,535 - #35 =
+INFO  02:27:28,535 - #45 c
+INFO  02:27:28,536 - #2 ;
+INFO  02:27:28,536 - #47 x
+INFO  02:27:28,536 - #35 =
+INFO  02:27:28,536 - #44 5
+INFO  02:27:28,536 - #2 ;
+INFO  02:27:28,537 - #47 y
+INFO  02:27:28,537 - #35 =
+INFO  02:27:28,537 - #47 fun
+INFO  02:27:28,537 - #6 (
+INFO  02:27:28,537 - #47 x
+INFO  02:27:28,537 - #7 )
+INFO  02:27:28,538 - #2 ;
+INFO  02:27:28,538 - #11 }
+INFO  02:27:28,538 - #11 }
+ERROR 02:27:28,556 - Semanticka greska: Funcija fun nema return iskaz na liniji 9
