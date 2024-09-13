@@ -22,7 +22,7 @@ public class Compiler {
 
 	public static void main(String[] args) throws Exception {
 
-		Logger log = Logger.getLogger(MJParserTest.class);
+		Logger log = Logger.getLogger(Compiler.class);
 
 		Reader br = null;
 		try {
@@ -38,6 +38,9 @@ public class Compiler {
 			Symbol s = p.parse();
 			Program prog = (Program) (s.value);
 
+			// System.out.println(prog.toString(""));
+			// log.info("====================================");
+
 			SymbolTable.init();
 
 			SemanticPass semanticPass = new SemanticPass();
@@ -45,6 +48,12 @@ public class Compiler {
 			prog.traverseBottomUp(semanticPass);
 
 			SymbolTable.dump();
+			if(!semanticPass.success()){
+				log.error("Parsiranje NIJE uspesno zavrseno");
+			}
+			else{
+				log.info("Parsiranje uspesno zavrseno");
+			}
 		} finally {
 			if (br != null)
 				try {

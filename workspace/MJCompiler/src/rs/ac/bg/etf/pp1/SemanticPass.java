@@ -77,8 +77,9 @@ public class SemanticPass extends VisitorAdaptor {
     public void visit(ConstNumber constant){
         if(currentType == Tab.intType){
             Obj obj = Tab.currentScope.findSymbol(constant.getConstName());
-            if(obj == null)
+            if(obj == null){
                 constant.obj = Tab.insert(Obj.Con, constant.getConstName(), currentType);
+            }
             else{
                 report_error("Simbol " + constant.getConstName() + " je vec deklarisan", constant);
             }
@@ -91,8 +92,9 @@ public class SemanticPass extends VisitorAdaptor {
     public void visit(ConstChar constant){
         if(currentType == Tab.charType){
             Obj obj = Tab.currentScope.findSymbol(constant.getConstName());
-            if(obj == null)
+            if(obj == null){
                 constant.obj = Tab.insert(Obj.Con, constant.getConstName(), currentType);
+            }
             else{
                 report_error("Simbol " + constant.getConstName() + " je vec deklarisan", constant);
             }
@@ -105,8 +107,9 @@ public class SemanticPass extends VisitorAdaptor {
     public void visit(ConstBool constant){
         if(currentType == boolType){
             Obj obj = Tab.currentScope.findSymbol(constant.getConstName());
-            if(obj == null)
+            if(obj == null){
                 constant.obj = Tab.insert(Obj.Con, constant.getConstName(), currentType);
+            }
             else{
                 report_error("Simbol " + constant.getConstName() + " je vec deklarisan", constant);
             }
@@ -643,5 +646,9 @@ public class SemanticPass extends VisitorAdaptor {
         cond.struct = cond.getCondTerm().struct;
     }
 
+    // SUCCESSFUL PASS
+    public boolean success(){
+        return !errorDetected;
+    }
 }
  
