@@ -1,18 +1,21 @@
 // generated with ast extension for cup
 // version 0.8
-// 12/8/2024 2:10:44
+// 13/8/2024 13:30:46
 
 
 package rs.ac.bg.etf.pp1.ast;
 
 public class ForStmt extends MatchedStatement {
 
+    private ForLoop ForLoop;
     private DesignatorStmtList DesignatorStmtList;
     private OptCondFact OptCondFact;
     private DesignatorStmtList DesignatorStmtList1;
     private MatchedStatement MatchedStatement;
 
-    public ForStmt (DesignatorStmtList DesignatorStmtList, OptCondFact OptCondFact, DesignatorStmtList DesignatorStmtList1, MatchedStatement MatchedStatement) {
+    public ForStmt (ForLoop ForLoop, DesignatorStmtList DesignatorStmtList, OptCondFact OptCondFact, DesignatorStmtList DesignatorStmtList1, MatchedStatement MatchedStatement) {
+        this.ForLoop=ForLoop;
+        if(ForLoop!=null) ForLoop.setParent(this);
         this.DesignatorStmtList=DesignatorStmtList;
         if(DesignatorStmtList!=null) DesignatorStmtList.setParent(this);
         this.OptCondFact=OptCondFact;
@@ -21,6 +24,14 @@ public class ForStmt extends MatchedStatement {
         if(DesignatorStmtList1!=null) DesignatorStmtList1.setParent(this);
         this.MatchedStatement=MatchedStatement;
         if(MatchedStatement!=null) MatchedStatement.setParent(this);
+    }
+
+    public ForLoop getForLoop() {
+        return ForLoop;
+    }
+
+    public void setForLoop(ForLoop ForLoop) {
+        this.ForLoop=ForLoop;
     }
 
     public DesignatorStmtList getDesignatorStmtList() {
@@ -60,6 +71,7 @@ public class ForStmt extends MatchedStatement {
     }
 
     public void childrenAccept(Visitor visitor) {
+        if(ForLoop!=null) ForLoop.accept(visitor);
         if(DesignatorStmtList!=null) DesignatorStmtList.accept(visitor);
         if(OptCondFact!=null) OptCondFact.accept(visitor);
         if(DesignatorStmtList1!=null) DesignatorStmtList1.accept(visitor);
@@ -68,6 +80,7 @@ public class ForStmt extends MatchedStatement {
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
+        if(ForLoop!=null) ForLoop.traverseTopDown(visitor);
         if(DesignatorStmtList!=null) DesignatorStmtList.traverseTopDown(visitor);
         if(OptCondFact!=null) OptCondFact.traverseTopDown(visitor);
         if(DesignatorStmtList1!=null) DesignatorStmtList1.traverseTopDown(visitor);
@@ -75,6 +88,7 @@ public class ForStmt extends MatchedStatement {
     }
 
     public void traverseBottomUp(Visitor visitor) {
+        if(ForLoop!=null) ForLoop.traverseBottomUp(visitor);
         if(DesignatorStmtList!=null) DesignatorStmtList.traverseBottomUp(visitor);
         if(OptCondFact!=null) OptCondFact.traverseBottomUp(visitor);
         if(DesignatorStmtList1!=null) DesignatorStmtList1.traverseBottomUp(visitor);
@@ -86,6 +100,12 @@ public class ForStmt extends MatchedStatement {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
         buffer.append("ForStmt(\n");
+
+        if(ForLoop!=null)
+            buffer.append(ForLoop.toString("  "+tab));
+        else
+            buffer.append(tab+"  null");
+        buffer.append("\n");
 
         if(DesignatorStmtList!=null)
             buffer.append(DesignatorStmtList.toString("  "+tab));

@@ -74,9 +74,10 @@ nonterminal StatementList;
 nonterminal Statement;
 nonterminal UnmatchedStatement;
 nonterminal MatchedStatement;
-nonterminal Condition;
-nonterminal CondTerm;
-nonterminal CondFact;
+nonterminal ForLoop;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Condition;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct CondTerm;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct CondFact;
 nonterminal rs.etf.pp1.symboltable.concepts.Obj Expr;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct TermList;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct Term;
@@ -217,10 +218,14 @@ MatchedStatement ::=
     | (ReadStmt) READ LPARENT Designator RPARENT SEMICOLON
     | (PrintExpr) PRINT LPARENT Expr RPARENT SEMICOLON
     | (PrintExprNumber) PRINT LPARENT Expr COMMA NUMBER RPARENT SEMICOLON
-    | (ForStmt) FOR LPARENT DesignatorStmtList SEMICOLON OptCondFact SEMICOLON DesignatorStmtList RPARENT MatchedStatement
+    | (ForStmt) ForLoop LPARENT DesignatorStmtList SEMICOLON OptCondFact SEMICOLON DesignatorStmtList RPARENT MatchedStatement
     | (StmtList) LBRACE StatementList RBRACE
     | (ErrorAssign) error:err SEMICOLON
         {: parser.log.debug("Uspesan oporavak od greske pri dodeli vrednosti."); :}
+;
+
+ForLoop ::= (ForLoop)
+    FOR
 ;
 
 DesignatorStmtList ::=
@@ -252,12 +257,14 @@ OptActPars ::=
 
 ActPars ::=
     (SingleActParam) Expr:e
-    | (ActParamList) ActPars COMMA Expr
+    | (ActParamList) ActPars COMMA Expr:e
 ;
 
 Condition ::=
     (SingleConditionTerm) CondTerm
     | (ConditionTermList) Condition OR CondTerm
+    | (ErrorCondition) error:err
+        {: parser.log.debug("Uspesan oporavak od greske pri logickom izrazu if naredbe na liniji " + errleft); :}
 ;
 
 CondTerm ::=

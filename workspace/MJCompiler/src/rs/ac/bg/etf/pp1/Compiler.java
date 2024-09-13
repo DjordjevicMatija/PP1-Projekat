@@ -20,34 +20,38 @@ public class Compiler {
 		Log4JUtils.instance().prepareLogFile(Logger.getRootLogger());
 	}
 
-    public static void main(String[] args) throws Exception {
-            
+	public static void main(String[] args) throws Exception {
+
 		Logger log = Logger.getLogger(MJParserTest.class);
 
 		Reader br = null;
 		try {
-			
-			File sourceCode = new File("test/program.mj");	
+
+			File sourceCode = new File("test/program.mj");
 			log.info("Compiling source file: " + sourceCode.getAbsolutePath());
-			
+
 			br = new BufferedReader(new FileReader(sourceCode));
-			
+
 			Yylex lexer = new Yylex(br);
 			MJParser p = new MJParser(lexer);
 
 			Symbol s = p.parse();
-			Program prog = (Program)(s.value);
+			Program prog = (Program) (s.value);
 
-            SymbolTable.init();
- 
+			SymbolTable.init();
+
 			SemanticPass semanticPass = new SemanticPass();
 			System.out.println("=====================SEMANTIC PASS=========================");
 			prog.traverseBottomUp(semanticPass);
 
-            SymbolTable.dump();
-		} 
-		finally {
-			if (br != null) try { br.close(); } catch (IOException e1) { log.error(e1.getMessage(), e1); }
+			SymbolTable.dump();
+		} finally {
+			if (br != null)
+				try {
+					br.close();
+				} catch (IOException e1) {
+					log.error(e1.getMessage(), e1);
+				}
 		}
 	}
 }

@@ -74,9 +74,10 @@ nonterminal StatementList StatementList;
 nonterminal Statement Statement;
 nonterminal UnmatchedStatement UnmatchedStatement;
 nonterminal MatchedStatement MatchedStatement;
-nonterminal Condition Condition;
-nonterminal CondTerm CondTerm;
-nonterminal CondFact CondFact;
+nonterminal ForLoop ForLoop;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Condition;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct CondTerm;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct CondFact;
 nonterminal rs.etf.pp1.symboltable.concepts.Obj Expr;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct TermList;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct Term;
@@ -217,10 +218,14 @@ MatchedStatement ::=
     | (ReadStmt) READ LPARENT Designator:D1 RPARENT SEMICOLON {: RESULT=new ReadStmt(D1); RESULT.setLine(D1left); :}
     | (PrintExpr) PRINT LPARENT Expr:E1 RPARENT SEMICOLON {: RESULT=new PrintExpr(E1); RESULT.setLine(E1left); :}
     | (PrintExprNumber) PRINT LPARENT Expr:E1 COMMA NUMBER:N2 RPARENT SEMICOLON {: RESULT=new PrintExprNumber(E1, N2); RESULT.setLine(E1left); :}
-    | (ForStmt) FOR LPARENT DesignatorStmtList:D1 SEMICOLON OptCondFact:O2 SEMICOLON DesignatorStmtList:D3 RPARENT MatchedStatement:M4 {: RESULT=new ForStmt(D1, O2, D3, M4); RESULT.setLine(D1left); :}
+    | (ForStmt) ForLoop:F1 LPARENT DesignatorStmtList:D2 SEMICOLON OptCondFact:O3 SEMICOLON DesignatorStmtList:D4 RPARENT MatchedStatement:M5 {: RESULT=new ForStmt(F1, D2, O3, D4, M5); RESULT.setLine(F1left); :}
     | (StmtList) LBRACE StatementList:S1 RBRACE {: RESULT=new StmtList(S1); RESULT.setLine(S1left); :}
     | (ErrorAssign) error:err SEMICOLON
         {: parser.log.debug("Uspesan oporavak od greske pri dodeli vrednosti."); :} {: RESULT=new ErrorAssign(); :}
+;
+
+ForLoop ::= (ForLoop)
+    FOR {: RESULT=new ForLoop(); :}
 ;
 
 DesignatorStmtList ::=
@@ -252,12 +257,14 @@ OptActPars ::=
 
 ActPars ::=
     (SingleActParam) Expr:e {: RESULT=new SingleActParam(e); RESULT.setLine(eleft); :}
-    | (ActParamList) ActPars:A1 COMMA Expr:E2 {: RESULT=new ActParamList(A1, E2); RESULT.setLine(A1left); :}
+    | (ActParamList) ActPars:A1 COMMA Expr:e {: RESULT=new ActParamList(A1, e); RESULT.setLine(A1left); :}
 ;
 
 Condition ::=
     (SingleConditionTerm) CondTerm:C1 {: RESULT=new SingleConditionTerm(C1); RESULT.setLine(C1left); :}
     | (ConditionTermList) Condition:C1 OR CondTerm:C2 {: RESULT=new ConditionTermList(C1, C2); RESULT.setLine(C1left); :}
+    | (ErrorCondition) error:err
+        {: parser.log.debug("Uspesan oporavak od greske pri logickom izrazu if naredbe na liniji " + errleft); :} {: RESULT=new ErrorCondition(); :}
 ;
 
 CondTerm ::=

@@ -5,9 +5,9 @@
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class ContinueStmt extends MatchedStatement {
+public class ErrorCondition extends Condition {
 
-    public ContinueStmt () {
+    public ErrorCondition () {
     }
 
     public void accept(Visitor visitor) {
@@ -28,10 +28,10 @@ public class ContinueStmt extends MatchedStatement {
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("ContinueStmt(\n");
+        buffer.append("ErrorCondition(\n");
 
         buffer.append(tab);
-        buffer.append(") [ContinueStmt]");
+        buffer.append(") [ErrorCondition]");
         return buffer.toString();
     }
 }

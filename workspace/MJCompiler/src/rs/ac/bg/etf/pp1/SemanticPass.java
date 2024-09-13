@@ -1,6 +1,8 @@
 package rs.ac.bg.etf.pp1;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 
 import org.apache.log4j.*;
 
@@ -22,13 +24,16 @@ public class SemanticPass extends VisitorAdaptor {
     boolean mainExists = false;
     ArrayList<Struct> localParams = new ArrayList<>();
 
+    boolean forStatementExists = false;
+    Deque<ForStmt> forStatements = new ArrayDeque<>();
+
     Logger log = Logger.getLogger(getClass());
 
     // LOGS
 
     public void report_error(String message, SyntaxNode info) {
 		errorDetected = true;
-		StringBuilder msg = new StringBuilder("Semanticka greska: ");
+		StringBuilder msg = new StringBuilder("\nSemanticka greska: ");
         msg.append(message);
 		int line = (info == null) ? 0: info.getLine();
 		if (line != 0)
@@ -218,7 +223,7 @@ public class SemanticPass extends VisitorAdaptor {
         Obj obj = Tab.currentScope.findSymbol(formParam.getParamName());
         if(obj == null){
             formParam.obj = Tab.insert(Obj.Var, formParam.getParamName(), formParam.getType().struct);
-            currentMethod.setFpPos(currentMethod.getFpPos() + 1);
+            currentMethod.setLevel(currentMethod.getLevel() + 1);
         }
         else{
             report_error("Simbol " + formParam.getParamName() + " je vec deklarisan", formParam);
@@ -229,7 +234,7 @@ public class SemanticPass extends VisitorAdaptor {
         Obj obj = Tab.currentScope.findSymbol(formParam.getParamName());
         if(obj == null){
             formParam.obj = Tab.insert(Obj.Var, formParam.getParamName(), new Struct(Struct.Array, formParam.getType().struct));
-            currentMethod.setFpPos(currentMethod.getFpPos() + 1);
+            currentMethod.setLevel(currentMethod.getLevel() + 1);
         }
         else{
             report_error("Simbol " + formParam.getParamName() + " je vec deklarisan", formParam);
@@ -243,6 +248,7 @@ public class SemanticPass extends VisitorAdaptor {
         if(obj == Tab.noObj){
             report_error("Simbol " + designatorElement.getDesignName() + " nije deklarisan", designatorElement);
         }
+        report_info("Detektovan simbol " + designatorElement.getDesignName(), designatorElement);
         designatorElement.obj = obj;
     }
 
@@ -252,6 +258,7 @@ public class SemanticPass extends VisitorAdaptor {
         if(obj == Tab.noObj){
             report_error("Simbol " + designatorArray.getDesignName() + " nije deklarisan", designatorArray);
         }
+        report_info("Detektovan simbol " + designatorArray.getDesignName(), designatorArray);
 
         if(obj.getType().getKind() != Struct.Array){
             report_error("Simbol " + designatorArray.getDesignName() + " nije deklarisan kao niz", designatorArray);
@@ -273,6 +280,8 @@ public class SemanticPass extends VisitorAdaptor {
         if(obj == Tab.noObj){
             report_error("Simbol " + designatorMatrix.getDesignName() + " nije deklarisan", designatorMatrix);
         }
+        report_info("Detektovan simbol " + designatorMatrix.getDesignName(), designatorMatrix);
+
 
         if(obj.getType().getKind() != Struct.Array || obj.getType().getElemType().getKind() != Struct.Array){
             report_error("Simbol " + designatorMatrix.getDesignName() + " nije deklarisan kao matrica", designatorMatrix);
@@ -294,6 +303,10 @@ public class SemanticPass extends VisitorAdaptor {
         localParams.add(param.getExpr().obj.getType());
     }
 
+    public void visit(ActParamList param){
+        localParams.add(param.getExpr().obj.getType());
+    }
+
     // DESIGNATOR STMT
 
     public void visit(DesignAssign designAssign){
@@ -306,7 +319,7 @@ public class SemanticPass extends VisitorAdaptor {
         Obj func = desingFunc.getDesignator().obj;
         if(func.getKind() == Obj.Meth){
 
-            if(localParams.size() != func.getFpPos()){
+            if(localParams.size() != func.getLevel()){
                 report_error("Neodgovarajuci broj parametara za metodu " + func.getName(), desingFunc);
             }
             else{
@@ -323,6 +336,7 @@ public class SemanticPass extends VisitorAdaptor {
         else{
             report_error("Simbol " + func.getName() + " nije deklarisan kao metoda", desingFunc);
         }
+        localParams.clear();
     }
 
     public void visit(DesignInc designInc){
@@ -358,7 +372,7 @@ public class SemanticPass extends VisitorAdaptor {
         if(func.getKind() == Obj.Meth){
             desingFunc.struct = func.getType();
 
-            if(localParams.size() != func.getFpPos()){
+            if(localParams.size() != func.getLevel()){
                 report_error("Neodgovarajuci broj parametara za metodu " + func.getName(), desingFunc);
             }
             else{
@@ -376,6 +390,7 @@ public class SemanticPass extends VisitorAdaptor {
             report_error("Simbol " + func.getName() + " nije deklarisan kao metoda", desingFunc);
             desingFunc.struct = Tab.noType;
         }
+        localParams.clear();
     }
 
     public void visit(FactorNumber factorConst){
@@ -470,6 +485,163 @@ public class SemanticPass extends VisitorAdaptor {
             expr.obj = new Obj(Obj.Con, null, expr.getTermList().struct);
         }
     }
+
+    // STATEMENTS
+
+    // UNMATCHED
+
+    public void visit(UnmatchedIf unmatchedIf){
+        if(unmatchedIf.getCondition().struct != boolType){
+            report_error("Uslov if izraza mora biti tipa bool", unmatchedIf);
+        }
+    }
+
+    public void visit(UnmatchedIfElse unmatchedIfElse){
+        if(unmatchedIfElse.getCondition().struct != boolType){
+            report_error("Uslov if izraza mora biti tipa bool", unmatchedIfElse);
+        }
+    }
     
+    // MATCHED
+
+    public void visit(MatchedIf matchedIf){
+        if(matchedIf.getCondition().struct != boolType){
+            report_error("Uslov if izraza mora biti tipa bool", matchedIf);
+        }
+    }
+
+    public void visit(BreakStmt breakStmt){
+        if(!forStatementExists){
+            report_error("Break naredba mora da se nalazi unutar for petlje", breakStmt);
+        }
+    }
+
+    public void visit(ContinueStmt continueStmt){
+        if(!forStatementExists){
+            report_error("Continue naredba mora da se nalazi unutar for petlje", continueStmt);
+        }
+    }
+
+    public void visit(ReturnNoExpr returnStmt){
+        if(currentMethod == null){
+            report_error("Return naredba mora da se nalazi unutar metode", returnStmt);
+            return;
+        }
+
+        returnFound = true;
+        if(!currentMethod.getType().compatibleWith(Tab.noType)){
+            report_error("Tip izraza u return naredbi se ne slaze sa povratnom vrednosti metode " + currentMethod.getName(), returnStmt);
+        }
+    }
+
+    public void visit(ReturnExpr returnStmt){
+        if(currentMethod == null){
+            report_error("Return naredba mora da se nalazi unutar metode", returnStmt);
+            return;
+        }
+
+        returnFound = true;
+        if(!currentMethod.getType().compatibleWith(returnStmt.getExpr().obj.getType())){
+            report_error("Tip izraza u return naredbi se ne slaze sa povratnom vrednosti metode " + currentMethod.getName(), returnStmt);
+        }
+    }
+
+    public void visit(ReadStmt readStmt){
+        Struct type = readStmt.getDesignator().obj.getType();
+        if(
+            type != Tab.intType
+            && type != Tab.charType
+            && type != boolType
+        ){
+            report_error("Metoda read moze da se zove samo za tipove int, char ili bool", readStmt);
+        }
+    }
+
+    public void visit(PrintExpr printStmt){
+        Struct type = printStmt.getExpr().obj.getType();
+        if(
+            type != Tab.intType
+            && type != Tab.charType
+            && type != boolType
+        ){
+            report_error("Metoda print moze da se zove samo za tipove int, char ili bool", printStmt);
+        }
+    }
+
+    public void visit(PrintExprNumber printStmt){
+        Struct type = printStmt.getExpr().obj.getType();
+        if(
+            type != Tab.intType
+            && type != Tab.charType
+            && type != boolType
+        ){
+            report_error("Metoda print moze da se zove samo za tipove int, char ili bool", printStmt);
+        }
+    }
+
+    public void visit(ForLoop forLoop){
+        forStatementExists = true;
+        if(forLoop.getParent() instanceof ForStmt){
+            forStatements.push((ForStmt)forLoop.getParent());
+        }
+    }
+
+    public void visit(ForStmt forStmt){
+        forStatements.pop();
+        if(forStatements.isEmpty()){
+            forStatementExists = false;
+        }
+    }
+
+    // COND FACT
+
+    public void visit(SingleCondition cond){
+        cond.struct = cond.getExpr().obj.getType();
+    }
+
+    public void visit(ConditionList condList){
+        Struct e = condList.getExpr().obj.getType();
+        Struct e1 = condList.getExpr1().obj.getType();
+        if(e1.compatibleWith(e)){
+            if(
+                e.isRefType()
+                && (condList.getRelop() instanceof RelopEquals || condList.getRelop() instanceof RelopNotEquals)
+            ){
+                condList.struct = boolType;
+            }
+            else if (!e.isRefType()){
+                condList.struct = boolType;
+            }
+            else{
+                report_error("Tipovi nisu kompatabilni", condList);
+                condList.struct = Tab.noType;
+            }
+        }
+        else{
+            report_error("Tipovi nisu kompatabilni", condList);
+            condList.struct = Tab.noType;
+        }
+    }
+
+    // COND TERM
+
+    public void visit(SingleConditionFact cond){
+        cond.struct = cond.getCondFact().struct;
+    }
+
+    public void visit(ConditionFactList cond){
+        cond.struct = cond.getCondFact().struct;
+    }
+
+    // CONDITION
+
+    public void visit(SingleConditionTerm cond){
+        cond.struct = cond.getCondTerm().struct;
+    }
+
+    public void visit(ConditionTermList cond){
+        cond.struct = cond.getCondTerm().struct;
+    }
+
 }
  
