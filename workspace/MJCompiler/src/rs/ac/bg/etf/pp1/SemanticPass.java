@@ -25,7 +25,12 @@ public class SemanticPass extends VisitorAdaptor {
     ArrayList<Struct> localParams = new ArrayList<>();
 
     boolean forStatementExists = false;
+    // moze samo counter umesto steka
     Deque<ForStmt> forStatements = new ArrayDeque<>();
+
+    boolean matrixError = false;
+
+    int nVars;
 
     Logger log = Logger.getLogger(getClass());
 
@@ -51,20 +56,13 @@ public class SemanticPass extends VisitorAdaptor {
 
     // PROGRAM
 
-    private boolean checkMain(Method method){
-        return (
-            method.getMethodPars() instanceof NoMethodParameters
-            && method.getMethodName() instanceof MethodVoidName
-            && "main".equals(((MethodVoidName)method.getMethodName()).getMethodName())
-        );
-    }
-
     public void visit(ProgName progName){
         progName.obj = Tab.insert(Obj.Prog, progName.getProgName(), Tab.noType);
         Tab.openScope();
     }
 
     public void visit(Program program){
+        nVars = Tab.currentScope.getnVars();
         Tab.chainLocalSymbols(program.getProgName().obj);
         Tab.closeScope();
         if(!mainExists){
@@ -175,6 +173,14 @@ public class SemanticPass extends VisitorAdaptor {
 
     // METHOD
 
+    public static boolean checkMain(Method method){
+        return (
+            method.getMethodPars() instanceof NoMethodParameters
+            && method.getMethodName() instanceof MethodVoidName
+            && "main".equalsIgnoreCase(((MethodVoidName)method.getMethodName()).getMethodName())
+        );
+    }
+
     public void visit(MethodTypeName methodName){
         Obj obj = Tab.currentScope.findSymbol(methodName.getMethodName());
         if(obj == null){
@@ -255,16 +261,28 @@ public class SemanticPass extends VisitorAdaptor {
         designatorElement.obj = obj;
     }
 
+    public void visit(DesignatorName name){
+        Obj obj = Tab.find(name.getDesignName());
+
+        if(obj == Tab.noObj){
+            name.obj = Tab.noObj;
+            report_error("Simbol " + name.getDesignName() + " nije deklarisan", name);
+        }
+        else{
+            name.obj = obj;
+        }
+    }
+
     public void visit(DesignatorArray designatorArray){
-        Obj obj = Tab.find(designatorArray.getDesignName());
+        Obj obj = Tab.find(designatorArray.getDesignatorName().getDesignName());
         Struct returnType;
         if(obj == Tab.noObj){
-            report_error("Simbol " + designatorArray.getDesignName() + " nije deklarisan", designatorArray);
+            report_error("Simbol " + designatorArray.getDesignatorName().getDesignName() + " nije deklarisan", designatorArray);
         }
-        report_info("Detektovan simbol " + designatorArray.getDesignName(), designatorArray);
+        report_info("Detektovan simbol " + designatorArray.getDesignatorName().getDesignName(), designatorArray);
 
         if(obj.getType().getKind() != Struct.Array){
-            report_error("Simbol " + designatorArray.getDesignName() + " nije deklarisan kao niz", designatorArray);
+            report_error("Simbol " + designatorArray.getDesignatorName().getDesignName() + " nije deklarisan kao niz", designatorArray);
             returnType = Tab.noType;
         }
         else{
@@ -274,20 +292,20 @@ public class SemanticPass extends VisitorAdaptor {
         if(designatorArray.getExpr().obj.getType() != Tab.intType){
             report_error("Na referencirani element niza mora ukazivati int", designatorArray);
         }
-        designatorArray.obj = new Obj(obj.getKind(), obj.getName(), returnType);
+        designatorArray.obj = new Obj(Obj.Elem, "", returnType);
     }
 
     public void visit(DesignatorMatrix designatorMatrix){        
-        Obj obj = Tab.find(designatorMatrix.getDesignName());
+        Obj obj = Tab.find(designatorMatrix.getDesignatorName().getDesignName());
         Struct returnType;
         if(obj == Tab.noObj){
-            report_error("Simbol " + designatorMatrix.getDesignName() + " nije deklarisan", designatorMatrix);
+            report_error("Simbol " + designatorMatrix.getDesignatorName().getDesignName() + " nije deklarisan", designatorMatrix);
         }
-        report_info("Detektovan simbol " + designatorMatrix.getDesignName(), designatorMatrix);
+        report_info("Detektovan simbol " + designatorMatrix.getDesignatorName().getDesignName(), designatorMatrix);
 
 
         if(obj.getType().getKind() != Struct.Array || obj.getType().getElemType().getKind() != Struct.Array){
-            report_error("Simbol " + designatorMatrix.getDesignName() + " nije deklarisan kao matrica", designatorMatrix);
+            report_error("Simbol " + designatorMatrix.getDesignatorName().getDesignName() + " nije deklarisan kao matrica", designatorMatrix);
             returnType = Tab.noType;
         }
         else{
@@ -297,7 +315,7 @@ public class SemanticPass extends VisitorAdaptor {
         if(designatorMatrix.getExpr().obj.getType() != Tab.intType || designatorMatrix.getExpr1().obj.getType() != Tab.intType){
             report_error("Na referencirani element matrice mora ukazivati int", designatorMatrix);
         }
-        designatorMatrix.obj = new Obj(obj.getKind(), obj.getName(), returnType);
+        designatorMatrix.obj = new Obj(Obj.Elem, "", returnType);
     }
 
     // ACT PARS
@@ -375,6 +393,11 @@ public class SemanticPass extends VisitorAdaptor {
         if(func.getKind() == Obj.Meth){
             desingFunc.struct = func.getType();
 
+            if(func.getType() == Tab.noType){
+                report_error("Void metoda ne moze da se koristi unutar izraza", desingFunc);
+                return;
+            }
+
             if(localParams.size() != func.getLevel()){
                 report_error("Neodgovarajuci broj parametara za metodu " + func.getName(), desingFunc);
             }
@@ -418,8 +441,18 @@ public class SemanticPass extends VisitorAdaptor {
         }
     }
 
+    public void visit(MatrixFactor matrixFactor){
+        if(matrixFactor.getExpr().obj.getType() != Tab.intType){
+            report_error("Na referencirani element matrice mora ukazivati int", matrixFactor);
+            matrixError = true;
+        }
+        else{
+            matrixError = false;
+        }
+    }
+
     public void visit(NewMatrixFactor factorMatrix){
-        if(factorMatrix.getExpr().obj.getType() != Tab.intType || factorMatrix.getExpr1().obj.getType() != Tab.intType){
+        if(factorMatrix.getExpr().obj.getType() != Tab.intType || matrixError){
             report_error("Na referencirani element matrice mora ukazivati int", factorMatrix);
             factorMatrix.struct = Tab.nullType;
         }
@@ -473,20 +506,20 @@ public class SemanticPass extends VisitorAdaptor {
         }
     }
 
+    public void visit(NegativeTermList expr){
+        if(expr.getTerm().struct != Tab.intType){
+            report_error("Izraz mora biti tipa int", expr);
+            expr.struct = Tab.noType;
+        }
+        else{
+            expr.struct = Tab.intType;
+        }
+    }
+
     // EXPR
 
     public void visit(PositiveTermList expr){
         expr.obj = new Obj(Obj.Con, null, expr.getTermList().struct);
-    }
-
-    public void visit(NegativeTermList expr){
-        if(expr.getTermList().struct != Tab.intType){
-            report_error("Izraz mora biti tipa int", expr);
-            expr.obj = new Obj(Obj.Con, null, Tab.noType);
-        }
-        else{
-            expr.obj = new Obj(Obj.Con, null, expr.getTermList().struct);
-        }
     }
 
     // STATEMENTS

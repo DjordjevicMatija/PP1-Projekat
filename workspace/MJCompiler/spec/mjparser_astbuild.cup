@@ -83,7 +83,10 @@ nonterminal rs.etf.pp1.symboltable.concepts.Struct TermList;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct Term;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct FactorList;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct Factor;
+nonterminal MatrixFactor MatrixFactor;
 nonterminal rs.etf.pp1.symboltable.concepts.Obj Designator;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj DesignatorName;
+nonterminal MatrixAload MatrixAload;
 nonterminal Label Label;
 nonterminal Assignop Assignop;
 nonterminal Relop Relop;
@@ -279,12 +282,12 @@ CondFact ::=
 
 Expr ::=
     (PositiveTermList) TermList:T1 {: RESULT=new PositiveTermList(T1); RESULT.setLine(T1left); :}
-    | (NegativeTermList) MINUS TermList:T1 {: RESULT=new NegativeTermList(T1); RESULT.setLine(T1left); :}
 ;
 
 TermList ::=
     (SingleTerm) Term:T1 {: RESULT=new SingleTerm(T1); RESULT.setLine(T1left); :}
     | (TerminalList) TermList:T1 Addop:A2 Term:T3 {: RESULT=new TerminalList(T1, A2, T3); RESULT.setLine(T1left); :}
+    | (NegativeTermList) MINUS Term:T1 {: RESULT=new NegativeTermList(T1); RESULT.setLine(T1left); :}
 ;
 
 Term ::= (Term)
@@ -303,15 +306,27 @@ Factor ::=
     | (FactorChar) CHAR:C1 {: RESULT=new FactorChar(C1); RESULT.setLine(C1left); :}
     | (FactorBool) BOOL:B1 {: RESULT=new FactorBool(B1); RESULT.setLine(B1left); :}
     | (NewArrayFactor) NEW Type:T1 LBRACKET Expr:E2 RBRACKET {: RESULT=new NewArrayFactor(T1, E2); RESULT.setLine(T1left); :}
-    | (NewMatrixFactor) NEW Type:T1 LBRACKET Expr:E2 RBRACKET LBRACKET Expr:E3 RBRACKET {: RESULT=new NewMatrixFactor(T1, E2, E3); RESULT.setLine(T1left); :}
+    | (NewMatrixFactor) NEW Type:T1 MatrixFactor:M2 LBRACKET Expr:E3 RBRACKET {: RESULT=new NewMatrixFactor(T1, M2, E3); RESULT.setLine(T1left); :}
     | (NewClassFactor) NEW Type:T1 LPARENT OptActPars:O2 RPARENT {: RESULT=new NewClassFactor(T1, O2); RESULT.setLine(T1left); :}
     | (FactorExpr) LPARENT Expr:E1 RPARENT {: RESULT=new FactorExpr(E1); RESULT.setLine(E1left); :}
 ;
 
+MatrixFactor ::=
+    (MatrixFactor) LBRACKET Expr:E1 RBRACKET {: RESULT=new MatrixFactor(E1); RESULT.setLine(E1left); :}
+;
+
 Designator ::=
     (DesignatorElement) IDENT:designName {: RESULT=new DesignatorElement(designName); RESULT.setLine(designNameleft); :}
-    | (DesignatorArray) IDENT:designName LBRACKET Expr:E1 RBRACKET {: RESULT=new DesignatorArray(designName, E1); RESULT.setLine(designNameleft); :}
-    | (DesignatorMatrix) IDENT:designName LBRACKET Expr:E1 RBRACKET LBRACKET Expr:E2 RBRACKET {: RESULT=new DesignatorMatrix(designName, E1, E2); RESULT.setLine(designNameleft); :}
+    | (DesignatorArray) DesignatorName:D1 LBRACKET Expr:E2 RBRACKET {: RESULT=new DesignatorArray(D1, E2); RESULT.setLine(D1left); :}
+    | (DesignatorMatrix) DesignatorName:D1 LBRACKET Expr:E2 RBRACKET MatrixAload:M3 LBRACKET Expr:E4 RBRACKET {: RESULT=new DesignatorMatrix(D1, E2, M3, E4); RESULT.setLine(D1left); :}
+;
+
+DesignatorName ::=
+    (DesignatorName) IDENT:designName {: RESULT=new DesignatorName(designName); RESULT.setLine(designNameleft); :}
+;
+
+MatrixAload ::=
+    (MatrixAload) {: RESULT=new MatrixAload(); :} /*epsilon*/
 ;
 
 Label ::= (Label)
