@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 13/8/2024 13:30:46
+// 15/8/2024 17:44:53
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -8,16 +8,16 @@ package rs.ac.bg.etf.pp1.ast;
 public class NewMatrixFactor extends Factor {
 
     private Type Type;
+    private MatrixFactor MatrixFactor;
     private Expr Expr;
-    private Expr Expr1;
 
-    public NewMatrixFactor (Type Type, Expr Expr, Expr Expr1) {
+    public NewMatrixFactor (Type Type, MatrixFactor MatrixFactor, Expr Expr) {
         this.Type=Type;
         if(Type!=null) Type.setParent(this);
+        this.MatrixFactor=MatrixFactor;
+        if(MatrixFactor!=null) MatrixFactor.setParent(this);
         this.Expr=Expr;
         if(Expr!=null) Expr.setParent(this);
-        this.Expr1=Expr1;
-        if(Expr1!=null) Expr1.setParent(this);
     }
 
     public Type getType() {
@@ -28,6 +28,14 @@ public class NewMatrixFactor extends Factor {
         this.Type=Type;
     }
 
+    public MatrixFactor getMatrixFactor() {
+        return MatrixFactor;
+    }
+
+    public void setMatrixFactor(MatrixFactor MatrixFactor) {
+        this.MatrixFactor=MatrixFactor;
+    }
+
     public Expr getExpr() {
         return Expr;
     }
@@ -36,35 +44,27 @@ public class NewMatrixFactor extends Factor {
         this.Expr=Expr;
     }
 
-    public Expr getExpr1() {
-        return Expr1;
-    }
-
-    public void setExpr1(Expr Expr1) {
-        this.Expr1=Expr1;
-    }
-
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
 
     public void childrenAccept(Visitor visitor) {
         if(Type!=null) Type.accept(visitor);
+        if(MatrixFactor!=null) MatrixFactor.accept(visitor);
         if(Expr!=null) Expr.accept(visitor);
-        if(Expr1!=null) Expr1.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
         if(Type!=null) Type.traverseTopDown(visitor);
+        if(MatrixFactor!=null) MatrixFactor.traverseTopDown(visitor);
         if(Expr!=null) Expr.traverseTopDown(visitor);
-        if(Expr1!=null) Expr1.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
         if(Type!=null) Type.traverseBottomUp(visitor);
+        if(MatrixFactor!=null) MatrixFactor.traverseBottomUp(visitor);
         if(Expr!=null) Expr.traverseBottomUp(visitor);
-        if(Expr1!=null) Expr1.traverseBottomUp(visitor);
         accept(visitor);
     }
 
@@ -79,14 +79,14 @@ public class NewMatrixFactor extends Factor {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(Expr!=null)
-            buffer.append(Expr.toString("  "+tab));
+        if(MatrixFactor!=null)
+            buffer.append(MatrixFactor.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(Expr1!=null)
-            buffer.append(Expr1.toString("  "+tab));
+        if(Expr!=null)
+            buffer.append(Expr.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");
