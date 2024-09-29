@@ -5,11 +5,11 @@
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class DesignDec extends DesignatorStatement {
+public class MatrixMax extends Factor {
 
     private Designator Designator;
 
-    public DesignDec (Designator Designator) {
+    public MatrixMax (Designator Designator) {
         this.Designator=Designator;
         if(Designator!=null) Designator.setParent(this);
     }
@@ -43,7 +43,7 @@ public class DesignDec extends DesignatorStatement {
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("DesignDec(\n");
+        buffer.append("MatrixMax(\n");
 
         if(Designator!=null)
             buffer.append(Designator.toString("  "+tab));
@@ -52,7 +52,7 @@ public class DesignDec extends DesignatorStatement {
         buffer.append("\n");
 
         buffer.append(tab);
-        buffer.append(") [DesignDec]");
+        buffer.append(") [MatrixMax]");
         return buffer.toString();
     }
 }

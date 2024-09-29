@@ -465,6 +465,23 @@ public class SemanticPass extends VisitorAdaptor {
         factorExpr.struct = factorExpr.getExpr().obj.getType();
     }
 
+    public void visit(MatrixMax matrixMax){
+        if(!(matrixMax.getDesignator() instanceof DesignatorElement)){
+            report_error("Simbol mora biti matrica", matrixMax);
+            matrixMax.struct = Tab.noType;
+        }
+        Obj obj = Tab.find(matrixMax.getDesignator().obj.getName());
+        if(obj.getType().getKind() != Struct.Array || obj.getType().getElemType().getKind() != Struct.Array){
+            report_error("Simbol mora biti matrica", matrixMax);
+            matrixMax.struct = Tab.noType;
+        }
+        if(obj.getType().getElemType().getElemType() != Tab.intType){
+            report_error("Elementi matrice moraju biti tipa int", matrixMax);
+            matrixMax.struct = Tab.noType;
+        }
+        matrixMax.struct = obj.getType();
+    }
+
     // FACTOR LIST
 
     public void visit(SingleFactor term){

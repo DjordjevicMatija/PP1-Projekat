@@ -47,6 +47,7 @@ terminal PRINT, READ;
 terminal PLUS, MINUS, MUL, DIV, MOD, INC, DEC, ASSIGN;
 terminal AND, OR;
 terminal EQUALS, NOT_EQUALS, GREATER, GREATER_EQUAL, LESS, LESS_EQUAL;
+terminal HASHTAG;
 terminal Integer NUMBER;
 terminal Character CHAR;
 terminal Boolean BOOL;
@@ -309,6 +310,7 @@ Factor ::=
     | (NewMatrixFactor) NEW Type MatrixFactor LBRACKET Expr RBRACKET
     | (NewClassFactor) NEW Type LPARENT OptActPars RPARENT
     | (FactorExpr) LPARENT Expr RPARENT
+    | (MatrixMax) HASHTAG Designator
 ;
 
 MatrixFactor ::=

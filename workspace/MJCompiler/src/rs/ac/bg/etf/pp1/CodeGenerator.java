@@ -162,6 +162,15 @@ public class CodeGenerator extends VisitorAdaptor{
         Code.put(Code.pop); // adr
     }
 
+    public void visit(MatrixMax matrixMax){
+        Code.load(matrixMax.getDesignator().obj);
+        Code.put(Code.dup);
+        Code.put(Code.arraylength);
+        Code.loadConst(1);
+        Code.put(Code.sub);
+        
+    }
+
     // FACTOR LIST
 
     public void visit(Factors factors){
